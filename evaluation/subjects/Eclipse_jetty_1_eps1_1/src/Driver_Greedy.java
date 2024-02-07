@@ -14,7 +14,7 @@ import edu.cmu.sv.kelinci.quantification.Greedy;
 public class Driver_Greedy {
 
     /* Maximum number of different observations. */
-    public final static int K = 100;
+    public final static int K = 2;
     public final static double epsilon = 1.0;
 
 	/* Cluster Algorithm */
