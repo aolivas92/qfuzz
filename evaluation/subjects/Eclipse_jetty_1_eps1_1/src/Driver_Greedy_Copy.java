@@ -112,11 +112,12 @@ public class Driver_Greedy_Copy {
                 if (cv > 1) {
                     break;
                 }
+                if (i == K) {
+                    K += 1;
+                }
 
             }
-            if (i == K) {
-                K += 1;
-            }
+
         }
         System.out.println("observations: " + Arrays.toString(observations));
 
