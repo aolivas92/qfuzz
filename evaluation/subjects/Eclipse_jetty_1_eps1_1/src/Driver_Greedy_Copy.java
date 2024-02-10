@@ -93,12 +93,14 @@ public class Driver_Greedy_Copy {
         }
 
         long[] observations = new long[K];
+        FileLogger fileLogger = new FileLogger("test1.txt");
         Mem.clear(true);
         for(int j = 0; j< 10;j++) {
 
             Mem.clear(false);
             boolean result1 = Credential.stringEquals_original(s1.get(i), s2);
             observations[i] = Mem.instrCost;
+            fileLogger.appendToLog(observations);
 
             for (int i = 0; i < K + 1; i++) {
 
