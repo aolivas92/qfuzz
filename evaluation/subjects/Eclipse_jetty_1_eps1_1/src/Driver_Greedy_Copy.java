@@ -11,10 +11,10 @@ import edu.cmu.sv.kelinci.quantification.PartitionAlgorithm;
 import edu.cmu.sv.kelinci.quantification.PartitionSet;
 import edu.cmu.sv.kelinci.quantification.Greedy;
 
-public class Driver_Greedy {
+public class Driver_Greedy_Copy {
 
     /* Maximum number of different observations. */
-    public final static int K = 2;
+    public final static int K = 10;
     public final static double epsilon = 1.0;
 
 	/* Cluster Algorithm */
@@ -94,10 +94,29 @@ public class Driver_Greedy {
 
         long[] observations = new long[K];
         Mem.clear(true);
-        for (int i=0; i<K; i++) {
+        for(int j = 0; j< 10;j++) {
+
             Mem.clear(false);
             boolean result1 = Credential.stringEquals_original(s1.get(i), s2);
             observations[i] = Mem.instrCost;
+
+            for (int i = 0; i < K + 1; i++) {
+
+                long[] sortedObservations = Arrays.copyOfRange(observations, 0, i);
+                Collections.reverse(List.of(sortedObservations));
+
+                double mean = Arrays.stream(sortedObservations).sum() / i;
+                double std = calculateStandardDeviation(sortedObservations);
+                double cv = std / mean;
+
+                if (cv > 1) {
+                    break;
+                }
+
+            }
+            if (i == K) {
+                K += 1;
+            }
         }
         System.out.println("observations: " + Arrays.toString(observations));
 
