@@ -17,7 +17,7 @@ time_bound=300 # 300 sec = 5 min
 step_size_eval=1 # every 1 seconds (for reporting)
 
 #driver="Driver_KDynamic"
-driver="Driver_Greedy_copy"
+driver="Driver_Greedy_Copy"
 
 declare -a subjects=(
 "Eclipse_jetty_1_eps1_1"
