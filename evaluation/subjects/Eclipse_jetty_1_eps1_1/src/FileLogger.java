@@ -36,6 +36,7 @@ public class FileLogger {
             out.print("]");
             out.println();
             out.close();
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
