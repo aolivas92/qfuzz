@@ -93,11 +93,31 @@ public class Driver_Greedy {
         }
 
         long[] observations = new long[K];
+        FileLogger fileLogger = new FileLogger("test1.txt");
         Mem.clear(true);
-        for (int i=0; i<K; i++) {
+        for(int j = 0; j< 10;j++) {
+
             Mem.clear(false);
             boolean result1 = Credential.stringEquals_original(s1.get(i), s2);
             observations[i] = Mem.instrCost;
+            fileLogger.appendToLog(observations);
+
+            for (int i = 0; i < K + 1; i++) {
+
+                long[] sortedObservations = Arrays.copyOfRange(observations, 0, i);
+                Collections.reverse(List.of(sortedObservations));
+
+                double mean = Arrays.stream(sortedObservations).sum() / i;
+                double std = calculateStandardDeviation(sortedObservations);
+                double cv = std / mean;
+
+                if (cv > 1) {
+                    break;
+                }
+                if (i == K) {
+                    K += 1;
+                }
+            }
         }
         System.out.println("observations: " + Arrays.toString(observations));
 
