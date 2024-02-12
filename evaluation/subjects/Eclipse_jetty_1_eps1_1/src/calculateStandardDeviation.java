@@ -1,7 +1,9 @@
 
 public class calculateStandardDeviation {
-    public static double calculateStandardDeviation(long[] array) {
+    public static void calculateStandardDeviation() {
+    }
 
+    public double calculateStandardDeviation(long[] array) {
         // get the sum of array
         long sum = 0;
         for (long i : array) {
