@@ -15,7 +15,7 @@ public class FileLogger {
         this.fileName = fileName;
     }
 
-    public void appendToLog(long[] newData) {
+    public void appendToLog(double newData) {
         try {
             // Check if file exists, if not create it
             Path path = Paths.get(this.fileName);
@@ -30,9 +30,10 @@ public class FileLogger {
             FileWriter writer = new FileWriter(this.fileName, true); // (file name, append)
             PrintWriter out = new PrintWriter(writer);
             out.print("[");
-            for (int i = 0; i < newData.length; i++) {
-                out.print(newData[i] + ", ");
-            }
+            // for (int i = 0; i < newData.length; i++) {
+            //     out.print(newData[i] + ", ");
+            // }
+            out.print(newData + ", ");
             out.print("]");
             out.println();
             out.close();
