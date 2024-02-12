@@ -14,7 +14,7 @@ import edu.cmu.sv.kelinci.quantification.Greedy;
 public class Driver_Greedy_Copy {
 
     /* Maximum number of different observations. */
-    public final static int K = 10;
+    public final static int K = 2;
     public final static double epsilon = 1.0;
 
 	/* Cluster Algorithm */
@@ -95,36 +95,37 @@ public class Driver_Greedy_Copy {
         long[] observations = new long[K];
         FileLogger fileLogger = new FileLogger("test1.txt");
         Mem.clear(true);
-        for(int j = 0; j< 10;j++) {
+        for(int j = 0; j < K;j++) {
 
             Mem.clear(false);
             boolean result1 = Credential.stringEquals_original(s1.get(i), s2);
             observations[i] = Mem.instrCost;
-            fileLogger.appendToLog(observations);
+        }
 
-            for (int i = 0; i < K + 1; i++) {
+        // TODO: Add a check to run only after we have 10 instances.
+        for (int i = 0; i < K + 1; i++) {
 
-                long[] sortedObservations = Arrays.copyOfRange(observations, 0, i);
-                Collections.reverse(List.of(sortedObservations));
+            long[] sortedObservations = Arrays.copyOfRange(observations, 0, i);
+            Collections.reverse(List.of(sortedObservations));
 
-                double mean = Arrays.stream(sortedObservations).sum() / i;
-                double std = calculateStandardDeviation(sortedObservations);
-                double cv = std / mean;
+            double mean = Arrays.stream(sortedObservations).sum() / i;
+            double std = calculateStandardDeviation(sortedObservations);
+            double cv = std / mean;
 
-                if (cv > 1) {
-                    break;
-                }
-                if (i == K) {
-                    K += 1;
-                }
-
+            if (cv > 1) {
+                break;
             }
-
+            if (i == K) {
+                K += 1;
+            }
         }
         System.out.println("observations: " + Arrays.toString(observations));
 
-    		PartitionSet clusters = PartitionSet.createFromObservations(epsilon, observations, clusterAlgorithm);
-    		Kelinci.setObserverdClusters(clusters.getClusterAverageValues(), clusters.getMinimumDeltaValue());
+    		// PartitionSet clusters = PartitionSet.createFromObservations(epsilon, observations, clusterAlgorithm);
+    		// Kelinci.setObserverdClusters(clusters.getClusterAverageValues(), clusters.getMinimumDeltaValue());
+
+        // TODO: compute the absolute difference between two observatons(same number logged), if the diff is more than or equal to 1 then log below
+        Kelinci.addCost(Math.abs(observations[0] - observations[1]));
 
     		System.out.println("Done.");
     }
