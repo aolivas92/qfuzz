@@ -126,6 +126,8 @@ public class Driver_Greedy_Copy {
 
         // TODO: compute the absolute difference between two observatons(same number logged), if the diff is more than or equal to 1 then log below
         Kelinci.addCost(Math.abs(observations[0] - observations[1]));
+        double analytics = Math.abs(observations[0] - observations[1]);
+        fileLogger.appendToLog(analytics);
 
     		System.out.println("Done.");
     }
