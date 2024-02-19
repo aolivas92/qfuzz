@@ -71,8 +71,8 @@ public class FileLogger {
         return "Error";
     }
 
-    public long[] readLongArray() {
-        List<Long> longList = new ArrayList<>();
+    public Double[] readNumArray() {
+        List<Double> numList = new ArrayList<>();
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(this.fileName));
@@ -82,8 +82,8 @@ public class FileLogger {
                 String[] tokens = line.trim().split("\\s+");
                 for (String token : tokens) {
                     try {
-                        long value = Long.parseLong(token);
-                        longList.add(value);
+                        Double value = Double.parseDouble(token);
+                        numList.add(value);
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
                     }
@@ -95,6 +95,6 @@ public class FileLogger {
             e.printStackTrace();
         }
 
-        return longList.stream().mapToLong(Long::longValue).toArray();
+        return numList.toArray(new Double[0]);
     }
 }
