@@ -3,6 +3,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -67,5 +69,32 @@ public class FileLogger {
             e.printStackTrace();
         }
         return "Error";
+    }
+
+    public long[] readLongArray() {
+        List<Long> longList = new ArrayList<>();
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(this.fileName));
+            String line;
+            // TODO: See if you need this? Just have one line
+            while ((line = reader.readLine()) != null) {
+                String[] tokens = line.trim().split("\\s+");
+                for (String token : tokens) {
+                    try {
+                        long value = Long.parseLong(token);
+                        longList.add(value);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return longList.stream().mapToLong(Long::longValue).toArray();
     }
 }
