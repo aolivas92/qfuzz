@@ -11,6 +11,16 @@ import edu.cmu.sv.kelinci.quantification.PartitionAlgorithm;
 import edu.cmu.sv.kelinci.quantification.PartitionSet;
 import edu.cmu.sv.kelinci.quantification.Greedy;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+
 public class Driver_Greedy {
 
     /* Maximum number of different observations. */
@@ -104,6 +114,22 @@ public class Driver_Greedy {
     		PartitionSet clusters = PartitionSet.createFromObservations(epsilon, observations, clusterAlgorithm);
     		Kelinci.setObserverdClusters(clusters.getClusterAverageValues(), clusters.getMinimumDeltaValue());
 
+        double analytics = Math.abs(observations[0] - observations[1]);
+
+        if (analytics > 0.0) {
+          try {
+            FileWriter writer = new FileWriter("text.txt", true);
+            PrintWriter out = new PrintWriter(writer);
+
+            out.print(analytics + " ");
+            
+            out.close();
+            writer.close();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+        
     		System.out.println("Done.");
     }
 
