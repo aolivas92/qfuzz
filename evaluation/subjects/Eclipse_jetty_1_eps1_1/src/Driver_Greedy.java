@@ -114,21 +114,35 @@ public class Driver_Greedy {
     		PartitionSet clusters = PartitionSet.createFromObservations(epsilon, observations, clusterAlgorithm);
     		Kelinci.setObserverdClusters(clusters.getClusterAverageValues(), clusters.getMinimumDeltaValue());
 
+        // Calculate analytics, Nathan
         double analytics = Math.abs(observations[0] - observations[1]);
 
-        if (analytics > 0.0) {
-          try {
-            FileWriter writer = new FileWriter("text.txt", true);
-            PrintWriter out = new PrintWriter(writer);
+        // Read Everything from Unique file, Alex
+        
+        // Log Everything, Alex
+        try {
+          FileWriter writer = new FileWriter("log.txt", true);
+          PrintWriter out = new PrintWriter(writer);
 
-            out.print(analytics + " ");
-            
-            out.close();
-            writer.close();
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
+          out.println(analytics + " ");
+          
+          out.close();
+          writer.close();
+        } catch (IOException e) {
+          e.printStackTrace();
         }
+
+        // Unique Instance check, Nathan
+        if (cv not in set()) {
+          // TODO: log unique instance
+
+          if (cv > 1) {
+            //TODO: log that test was passed then break
+            break;  
+          }
+
+        }
+        
         
     		System.out.println("Done.");
     }
