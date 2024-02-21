@@ -4,6 +4,8 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import edu.cmu.sv.kelinci.Kelinci;
 import edu.cmu.sv.kelinci.Mem;
@@ -15,6 +17,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.NumberFormatException;
 import java.io.PrintWriter;
 
 import java.nio.file.Path;
@@ -118,33 +121,73 @@ public class Driver_Greedy {
         double analytics = Math.abs(observations[0] - observations[1]);
 
         // Read Everything from Unique file, Alex
+        Set<Double> uniqueValues = readDoubleSetLog("Unique_Log.txt");
         
         // Log Everything, Alex
-        try {
-          FileWriter writer = new FileWriter("log.txt", true);
-          PrintWriter out = new PrintWriter(writer);
-
-          out.println(analytics + " ");
-          
-          out.close();
-          writer.close();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
+        String data = Double.toString(analytics);
+        appendToLog("log.txt", data);
 
         // Unique Instance check, Nathan
-        if (cv not in set()) {
-          // TODO: log unique instance
+        // if (cv not in set()) {
+        //   // TODO: log unique instance
 
-          if (cv > 1) {
-            //TODO: log that test was passed then break
-            break;  
-          }
+        //   if (cv > 1) {
+        //     //TODO: log that test was passed then break
+        //     break;  
+        //   }
 
-        }
+        // }
         
         
     		System.out.println("Done.");
     }
 
+
+    /* Logging Algorithm */
+    public static void appendToLog(String fileName, String data) {
+      try {
+      FileWriter writer = new FileWriter(fileName, true);
+      PrintWriter out = new PrintWriter(writer);
+
+      out.println(data);
+      
+      out.close();
+      writer.close();
+      } catch (IOException e) {
+      e.printStackTrace();
+      }
+    }
+
+    /* Read Log File */
+    public static Set<Double> readDoubleSetLog(String fileName) {
+      Set<Double> doubleSet = new HashSet<>();
+
+      File file = new File(fileName);
+
+      try {
+          // If file doesn't exists, create one and return empty set
+          if (!file.exists()) {
+              file.createNewFile();
+              return doubleSet;
+          }
+
+          // Read file if it exists
+          BufferedReader reader = new BufferedReader(new FileReader(fileName));
+          String line;
+          while ((line = reader.readLine()) != null) {
+              try {
+                double value = Double.parseDouble(line.trim());
+                doubleSet.add(value);
+              } catch (NumberFormatException e) {
+                e.printStackTrace();
+              }
+          }
+
+          reader.close();
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
+
+      return doubleSet;
+    }
 }
