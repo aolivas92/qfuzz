@@ -130,11 +130,17 @@ public class Driver_Greedy {
 
         if(!uniqueValues.contains(analytics))
         {
+            uniqueValues.add(analytics);
             appendToLog("Unique_Log.txt", Double.toString(analytics));
         }
-        if(expTest(uniqueValues))
-        {
-            appendToLog("log.txt", "exp test passed");
+
+        // Size threshold -- should be set to 10, but for this subject there is only 3 unique values
+        int threshold = 2;
+
+        if(uniqueValues.size() > threshold) {
+            if (expTest(uniqueValues)) {
+                appendToLog("log.txt", "exp test passed");
+            }
         }
 
     		System.out.println("Done.");
