@@ -128,18 +128,15 @@ public class Driver_Greedy {
         String data = Double.toString(analytics);
         appendToLog("log.txt", data);
 
-        // Unique Instance check, Nathan
-        // if (cv not in set()) {
-        //   // TODO: log unique instance
+        if(!uniqueValues.contains(analytics))
+        {
+            appendToLog("Unique_Log.txt", Double.toString(analytics));
+        }
+        if(expTest(uniqueValues))
+        {
+            appendToLog("log.txt", "exp test passed");
+        }
 
-        //   if (cv > 1) {
-        //     //TODO: log that test was passed then break
-        //     break;  
-        //   }
-
-        // }
-        
-        
     		System.out.println("Done.");
     }
 
@@ -190,5 +187,21 @@ public class Driver_Greedy {
       }
 
       return doubleSet;
+    }
+    public static boolean expTest(Set<Double> arr)
+    {
+        double sum = 0;
+        double mean = 0;
+        double standardDeviation = 0;
+        for (double item : arr)
+        {
+            sum += item;
+        }
+        mean = sum / arr.size();
+        for (double item: arr)
+        {
+            standardDeviation += Math.pow(item - mean, 2);
+        }
+        return Math.sqrt(standardDeviation / arr.size())> 1;
     }
 }
