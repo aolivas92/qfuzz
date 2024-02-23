@@ -208,6 +208,6 @@ public class Driver_Greedy {
         {
             standardDeviation += Math.pow(item - mean, 2);
         }
-        return Math.sqrt(standardDeviation / arr.size())> 1;
+        return standardDeviation/mean > 1;
     }
 }
