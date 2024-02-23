@@ -4,8 +4,10 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.TreeSet;
-import java.util.SortedSet;
+import java.util.HashSet;
+import java.util.Set;
+// import java.util.TreeSet;
+// import java.util.SortedSet;
 
 import edu.cmu.sv.kelinci.Kelinci;
 import edu.cmu.sv.kelinci.Mem;
@@ -126,7 +128,7 @@ public class Driver_Greedy {
         appendToLog("log.txt", data);
 
         // Read Everything from Unique file, Alex
-        SortedSet<Double> uniqueValues = readDoubleSetLog("Unique_Log.txt");
+        Set<Double> uniqueValues = readDoubleSetLog("Unique_Log.txt");
 
         if(!uniqueValues.contains(analytics))
         {
@@ -170,8 +172,8 @@ public class Driver_Greedy {
     }
 
     /* Read Log File */
-    public static SortedSet<Double> readDoubleSetLog(String fileName) {
-      SortedSet<Double> doubleSet = new TreeSet<>();
+    public static Set<Double> readDoubleSetLog(String fileName) {
+      Set<Double> doubleSet = new HashSet<>();
 
       File file = new File(fileName);
 
@@ -201,7 +203,7 @@ public class Driver_Greedy {
 
       return doubleSet;
     }
-    public static boolean expTest(SortedSet<Double> arr,int threshold)
+    public static boolean expTest(Set<Double> arr,int threshold)
     {
         double sum = 0;
         double mean = 0;
