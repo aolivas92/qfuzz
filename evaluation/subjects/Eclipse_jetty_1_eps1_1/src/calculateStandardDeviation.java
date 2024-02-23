@@ -20,6 +20,6 @@ public class calculateStandardDeviation {
             standardDeviation += Math.pow(num - mean, 2);
         }
 
-        return [Math.sqrt(standardDeviation / length),(double)sum];
+        return 1.0;
     }
 }
