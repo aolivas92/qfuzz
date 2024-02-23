@@ -1,7 +1,11 @@
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import edu.cmu.sv.kelinci.Kelinci;
 import edu.cmu.sv.kelinci.Mem;
@@ -9,10 +13,22 @@ import edu.cmu.sv.kelinci.quantification.PartitionAlgorithm;
 import edu.cmu.sv.kelinci.quantification.PartitionSet;
 import edu.cmu.sv.kelinci.quantification.Greedy;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.NumberFormatException;
+import java.io.PrintWriter;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+
 public class Driver_Greedy {
 
 	/* Maximum number of different observations. */
-	public final static int K = 100;
+	public final static int K = 2;
 
 	/* Minimum distance between clusters. */
 	public final static double epsilon = 1.0;
@@ -71,7 +87,96 @@ public class Driver_Greedy {
 		PartitionSet clusters = PartitionSet.createFromObservations(epsilon, observations, clusterAlgorithm);
 		Kelinci.setObserverdClusters(clusters.getClusterAverageValues(), clusters.getMinimumDeltaValue());
 
-		System.out.println("Done.");
-	}
+		// Calculate analytics, Nathan
+        double analytics = Math.abs(observations[0] - observations[1]);
 
+        // Read Everything from Unique file, Alex
+        Set<Double> uniqueValues = readDoubleSetLog("Unique_Log.txt");
+        
+        // Log Everything, Alex
+        String data = Double.toString(analytics);
+        appendToLog("log.txt", data);
+
+        if(!uniqueValues.contains(analytics))
+        {
+            uniqueValues.add(analytics);
+            appendToLog("Unique_Log.txt", Double.toString(analytics));
+        }
+
+        // Size threshold -- should be set to 10, but for this subject there is only 3 unique values
+        int threshold = 10;
+
+        if(uniqueValues.size() > threshold) {
+            if (expTest(uniqueValues)) {
+                appendToLog("log.txt", "exp test passed");
+            }
+        }
+
+    		System.out.println("Done.");
+    }
+
+
+    /* Logging Algorithm */
+    public static void appendToLog(String fileName, String data) {
+      try {
+      FileWriter writer = new FileWriter(fileName, true);
+      PrintWriter out = new PrintWriter(writer);
+
+      out.println(data);
+      
+      out.close();
+      writer.close();
+      } catch (IOException e) {
+      e.printStackTrace();
+      }
+    }
+
+    /* Read Log File */
+    public static Set<Double> readDoubleSetLog(String fileName) {
+      Set<Double> doubleSet = new HashSet<>();
+
+      File file = new File(fileName);
+
+      try {
+          // If file doesn't exists, create one and return empty set
+          if (!file.exists()) {
+              file.createNewFile();
+              return doubleSet;
+          }
+
+          // Read file if it exists
+          BufferedReader reader = new BufferedReader(new FileReader(fileName));
+          String line;
+          while ((line = reader.readLine()) != null) {
+              try {
+                double value = Double.parseDouble(line.trim());
+                doubleSet.add(value);
+              } catch (NumberFormatException e) {
+                e.printStackTrace();
+              }
+          }
+
+          reader.close();
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
+
+      return doubleSet;
+    }
+    public static boolean expTest(Set<Double> arr)
+    {
+        double sum = 0;
+        double mean = 0;
+        double standardDeviation = 0;
+        for (double item : arr)
+        {
+            sum += item;
+        }
+        mean = sum / arr.size();
+        for (double item: arr)
+        {
+            standardDeviation += Math.pow(item - mean, 2);
+        }
+        return Math.sqrt(standardDeviation / arr.size())> 1;
+    }
 }
