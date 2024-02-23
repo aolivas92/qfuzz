@@ -4,8 +4,8 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.TreeSet;
+import java.util.SortedSet;
 
 import edu.cmu.sv.kelinci.Kelinci;
 import edu.cmu.sv.kelinci.Mem;
@@ -122,7 +122,7 @@ public class Driver_Greedy {
         double analytics = Math.abs(observations[0] - observations[1]);
 
         // Read Everything from Unique file, Alex
-        Set<Double> uniqueValues = readDoubleSetLog("Unique_Log.txt");
+        SortedSet<Double> uniqueValues = readDoubleSetLog("Unique_Log.txt");
         
         // Log Everything, Alex
         String data = Double.toString(analytics);
@@ -163,8 +163,8 @@ public class Driver_Greedy {
     }
 
     /* Read Log File */
-    public static Set<Double> readDoubleSetLog(String fileName) {
-      Set<Double> doubleSet = new HashSet<>();
+    public static SortedSet<Double> readDoubleSetLog(String fileName) {
+      SortedSet<Double> doubleSet = new TreeSet<>();
 
       File file = new File(fileName);
 
