@@ -121,12 +121,12 @@ public class Driver_Greedy {
         // Calculate analytics, Nathan
         double analytics = Math.abs(observations[0] - observations[1]);
 
-        // Read Everything from Unique file, Alex
-        SortedSet<Double> uniqueValues = readDoubleSetLog("Unique_Log.txt");
-        
         // Log Everything, Alex
         String data = Double.toString(analytics);
         appendToLog("log.txt", data);
+
+        // Read Everything from Unique file, Alex
+        SortedSet<Double> uniqueValues = readDoubleSetLog("Unique_Log.txt");
 
         if(!uniqueValues.contains(analytics))
         {
@@ -156,7 +156,7 @@ public class Driver_Greedy {
         if (!file.exists()) {
           file.createNewFile();
         }
-        
+
         FileWriter writer = new FileWriter(fileName, true);
         PrintWriter out = new PrintWriter(writer);
 
