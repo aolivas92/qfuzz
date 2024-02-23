@@ -17,13 +17,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-// import java.io.IOException;
 import java.lang.NumberFormatException;
 import java.io.PrintWriter;
-
-// import java.nio.file.Path;
-// import java.nio.file.Paths;
-// import java.nio.file.Files;
 
 public class Driver_Greedy {
 
