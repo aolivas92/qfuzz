@@ -90,12 +90,12 @@ public class Driver_Greedy {
 		// Calculate analytics, Nathan
         double analytics = Math.abs(observations[0] - observations[1]);
 
-        // Read Everything from Unique file, Alex
-        Set<Double> uniqueValues = readDoubleSetLog("Unique_Log.txt");
-        
         // Log Everything, Alex
         String data = Double.toString(analytics);
         appendToLog("log.txt", data);
+
+        // Read Everything from Unique file, Alex
+        SortedSet<Double> uniqueValues = readDoubleSetLog("Unique_Log.txt");
 
         if(!uniqueValues.contains(analytics))
         {
@@ -104,10 +104,10 @@ public class Driver_Greedy {
         }
 
         // Size threshold -- should be set to 10, but for this subject there is only 3 unique values
-        int threshold = 10;
+        int threshold = 2;
 
         if(uniqueValues.size() > threshold) {
-            if (expTest(uniqueValues)) {
+            if (expTest(uniqueValues,threshold)) {
                 appendToLog("log.txt", "exp test passed");
             }
         }
@@ -118,22 +118,22 @@ public class Driver_Greedy {
 
     /* Logging Algorithm */
     public static void appendToLog(String fileName, String data) {
-      try {
-      FileWriter writer = new FileWriter(fileName, true);
-      PrintWriter out = new PrintWriter(writer);
-
-      out.println(data);
-      
-      out.close();
-      writer.close();
-      } catch (IOException e) {
-      e.printStackTrace();
-      }
-    }
+		try {
+		FileWriter writer = new FileWriter(fileName, true);
+		PrintWriter out = new PrintWriter(writer);
+  
+		out.println(data);
+		  
+		out.close();
+		writer.close();
+		} catch (IOException e) {
+		e.printStackTrace();
+		}
+	}
 
     /* Read Log File */
-    public static Set<Double> readDoubleSetLog(String fileName) {
-      Set<Double> doubleSet = new HashSet<>();
+    public static SortedSet<Double> readDoubleSetLog(String fileName) {
+      SortedSet<Double> doubleSet = new TreeSet<>();
 
       File file = new File(fileName);
 
@@ -163,20 +163,31 @@ public class Driver_Greedy {
 
       return doubleSet;
     }
-    public static boolean expTest(Set<Double> arr)
+    public static boolean expTest(SortedSet<Double> arr,int threshold)
     {
         double sum = 0;
         double mean = 0;
         double standardDeviation = 0;
+        int i = 0;
         for (double item : arr)
         {
+            if(i > threshold) {
+                break;
+            }
             sum += item;
+            i++;
         }
-        mean = sum / arr.size();
+        mean = sum / i;
+        int j = 0;
+
         for (double item: arr)
         {
+            if(j > threshold) {
+                break;
+            }
             standardDeviation += Math.pow(item - mean, 2);
+            j++;
         }
-        return Math.sqrt(standardDeviation / arr.size())> 1;
+        return standardDeviation / mean > 1;
     }
 }
