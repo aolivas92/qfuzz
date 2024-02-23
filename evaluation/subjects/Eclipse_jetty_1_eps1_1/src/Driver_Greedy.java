@@ -149,16 +149,23 @@ public class Driver_Greedy {
 
     /* Logging Algorithm */
     public static void appendToLog(String fileName, String data) {
-      try {
-      FileWriter writer = new FileWriter(fileName, true);
-      PrintWriter out = new PrintWriter(writer);
+      File file = new File(fileName);
 
-      out.println(data);
-      
-      out.close();
-      writer.close();
+      try {
+        // If file doesn't exists, create one and return empty set
+        if (!file.exists()) {
+          file.createNewFile();
+        }
+        
+        FileWriter writer = new FileWriter(fileName, true);
+        PrintWriter out = new PrintWriter(writer);
+
+        out.println(data);
+        
+        out.close();
+        writer.close();
       } catch (IOException e) {
-      e.printStackTrace();
+        e.printStackTrace();
       }
     }
 
