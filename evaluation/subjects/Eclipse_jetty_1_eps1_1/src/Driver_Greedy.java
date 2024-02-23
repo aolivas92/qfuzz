@@ -149,14 +149,7 @@ public class Driver_Greedy {
 
     /* Logging Algorithm */
     public static void appendToLog(String fileName, String data) {
-      File file = new File(fileName);
-
       try {
-        // If file doesn't exists, create one and return empty set
-        if (!file.exists()) {
-          file.createNewFile();
-        }
-
         FileWriter writer = new FileWriter(fileName, true);
         PrintWriter out = new PrintWriter(writer);
 
