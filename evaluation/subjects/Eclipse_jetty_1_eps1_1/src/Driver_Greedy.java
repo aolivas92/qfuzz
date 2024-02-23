@@ -206,19 +206,25 @@ public class Driver_Greedy {
         double sum = 0;
         double mean = 0;
         double standardDeviation = 0;
-        for (double item : arr)
-        {
-            sum += item;
-        }
-        mean = sum / arr.size();
         int i = 0;
-        for (double item: arr)
+        for (double item : arr)
         {
             if(i > threshold) {
                 break;
             }
+            sum += item;
+        }
+        mean = sum / i;
+
+        int j = 0;
+        for (double item: arr)
+        {
+            if(j > threshold) {
+                break;
+            }
+
             standardDeviation += Math.pow(item - mean, 2);
-            i++;
+            j++;
         }
         return standardDeviation/mean > 1;
     }
