@@ -118,18 +118,18 @@ public class Driver_Greedy {
 
     /* Logging Algorithm */
     public static void appendToLog(String fileName, String data) {
-		try {
-		FileWriter writer = new FileWriter(fileName, true);
-		PrintWriter out = new PrintWriter(writer);
-  
-		out.println(data);
-		  
-		out.close();
-		writer.close();
-		} catch (IOException e) {
-		e.printStackTrace();
-		}
-	}
+      try {
+        FileWriter writer = new FileWriter(fileName, true);
+        PrintWriter out = new PrintWriter(writer);
+
+        out.println(data);
+        
+        out.close();
+        writer.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
 
     /* Read Log File */
     public static SortedSet<Double> readDoubleSetLog(String fileName) {
