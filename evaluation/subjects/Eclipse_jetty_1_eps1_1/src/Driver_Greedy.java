@@ -138,7 +138,7 @@ public class Driver_Greedy {
         int threshold = 2;
 
         if(uniqueValues.size() > threshold) {
-            if (expTest(uniqueValues)) {
+            if (expTest(uniqueValues,threshold)) {
                 appendToLog("log.txt", "exp test passed");
             }
         }
@@ -194,7 +194,7 @@ public class Driver_Greedy {
 
       return doubleSet;
     }
-    public static boolean expTest(Set<Double> arr)
+    public static boolean expTest(Set<Double> arr,int threshold)
     {
         double sum = 0;
         double mean = 0;
@@ -204,9 +204,14 @@ public class Driver_Greedy {
             sum += item;
         }
         mean = sum / arr.size();
+        int i;
         for (double item: arr)
         {
+            if(i > threshold) {
+                break;
+            }
             standardDeviation += Math.pow(item - mean, 2);
+            i++;
         }
         return standardDeviation/mean > 1;
     }
