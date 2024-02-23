@@ -88,32 +88,32 @@ public class Driver_Greedy {
 		Kelinci.setObserverdClusters(clusters.getClusterAverageValues(), clusters.getMinimumDeltaValue());
 
 		// Calculate analytics, Nathan
-        double analytics = Math.abs(observations[0] - observations[1]);
+    double analytics = Math.abs(observations[0] - observations[1]);
 
-        // Log Everything, Alex
-        String data = Double.toString(analytics);
-        appendToLog("log.txt", data);
+    // Log Everything, Alex
+    String data = Double.toString(analytics);
+    appendToLog("log.txt", data);
 
-        // Read Everything from Unique file, Alex
-        SortedSet<Double> uniqueValues = readDoubleSetLog("Unique_Log.txt");
+    // Read Everything from Unique file, Alex
+    SortedSet<Double> uniqueValues = readDoubleSetLog("Unique_Log.txt");
 
-        if(!uniqueValues.contains(analytics))
-        {
-            uniqueValues.add(analytics);
-            appendToLog("Unique_Log.txt", Double.toString(analytics));
-        }
-
-        // Size threshold -- should be set to 10, but for this subject there is only 3 unique values
-        int threshold = 2;
-
-        if(uniqueValues.size() > threshold) {
-            if (expTest(uniqueValues,threshold)) {
-                appendToLog("log.txt", "exp test passed");
-            }
-        }
-
-    		System.out.println("Done.");
+    if(!uniqueValues.contains(analytics))
+    {
+        uniqueValues.add(analytics);
+        appendToLog("Unique_Log.txt", Double.toString(analytics));
     }
+
+    // Size threshold -- should be set to 10, but for this subject there is only 3 unique values
+    int threshold = 10;
+
+    if(uniqueValues.size() > threshold) {
+        if (expTest(uniqueValues,threshold)) {
+            appendToLog("log.txt", "exp test passed");
+        }
+    }
+
+    System.out.println("Done.");
+  }
 
 
     /* Logging Algorithm */
