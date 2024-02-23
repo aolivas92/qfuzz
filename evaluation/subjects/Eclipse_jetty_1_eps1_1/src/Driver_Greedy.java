@@ -211,7 +211,7 @@ public class Driver_Greedy {
             sum += item;
         }
         mean = sum / arr.size();
-        int i;
+        int i = 0;
         for (double item: arr)
         {
             if(i > threshold) {
