@@ -124,6 +124,14 @@ public class Driver_Greedy {
     String uniqueLogPath = "./log/Unique_Log.txt";
     SortedSet<Double> uniqueValues = readDoubleSetLog(uniqueLogPath);
 
+    // Read Test Log file, Alex
+    String testLogPath = "./log/testLogPath.txt";
+    String testStatus = readTestLog(testLogPath);
+    long count = Long.parseLong(testStatus.split(" ")[0]);
+    Boolean testPassed = Boolean.parseBoolean(testStatus.split(" ")[2]);
+    long locationPassed = Long.parseLong(testStatus.split(" ")[2]);
+    long countPassed = Long.parseLong(testStatus.split(" ")[3]);
+
     if (!uniqueValues.contains(analytics)) {
       uniqueValues.add(analytics);
       appendToLog(uniqueLogPath, Double.toString(analytics));
@@ -135,9 +143,18 @@ public class Driver_Greedy {
 
     if (uniqueValues.size() > threshold) {
       if (expTest(uniqueValues, threshold)) {
+        testPassed = true;
+        locationPassed = count;
         appendToLog(logPath, "-1");
       }
     }
+
+    // Write to test file
+    if (testPassed) {
+      countPassed++;
+    }
+    String testStatusUpdate = count + 1 + " " + testPassed + " " + locationPassed + " " + countPassed;
+    appendToLog(testLogPath, testStatusUpdate);
 
     System.out.println("Done.");
   }
@@ -188,6 +205,37 @@ public class Driver_Greedy {
     }
 
     return doubleSet;
+  }
+
+  /* Read Log File */
+  public static String readTestLog(String fileName) {
+    File file = new File(fileName);
+
+    try {
+      // If file doesn't exists, create one and return empty set
+      if (!file.exists()) {
+        file.createNewFile();
+        // Counter, Exponential Test Passed, location passed, counter after passed
+        return "0 false 0 0";
+      }
+
+      // Read file if it exists
+      BufferedReader reader = new BufferedReader(new FileReader(fileName));
+      String line;
+      while ((line = reader.readLine()) != null) {
+        try {
+          return line;
+        } catch (NumberFormatException e) {
+          e.printStackTrace();
+        }
+      }
+
+      reader.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    return "error";
   }
 
   public static boolean expTest(SortedSet<Double> arr, int threshold) {
