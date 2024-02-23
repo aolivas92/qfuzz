@@ -185,7 +185,7 @@ public class Driver_Greedy {
             if(j > threshold) {
                 break;
             }
-            standardDeviation += Math.pow(item - mean, 2);
+            standardDeviation += Math.sqrt(Math.pow(item - mean, 2));
             j++;
         }
         return standardDeviation / mean > 1;
