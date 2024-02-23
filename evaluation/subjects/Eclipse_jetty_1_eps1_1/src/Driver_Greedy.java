@@ -4,10 +4,8 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.HashSet;
-import java.util.Set;
-// import java.util.TreeSet;
-// import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.SortedSet;
 
 import edu.cmu.sv.kelinci.Kelinci;
 import edu.cmu.sv.kelinci.Mem;
@@ -128,7 +126,7 @@ public class Driver_Greedy {
         appendToLog("log.txt", data);
 
         // Read Everything from Unique file, Alex
-        Set<Double> uniqueValues = readDoubleSetLog("Unique_Log.txt");
+        SortedSet<Double> uniqueValues = readDoubleSetLog("Unique_Log.txt");
 
         if(!uniqueValues.contains(analytics))
         {
@@ -172,8 +170,8 @@ public class Driver_Greedy {
     }
 
     /* Read Log File */
-    public static Set<Double> readDoubleSetLog(String fileName) {
-      Set<Double> doubleSet = new HashSet<>();
+    public static SortedSet<Double> readDoubleSetLog(String fileName) {
+      SortedSet<Double> doubleSet = new TreeSet<>();
 
       File file = new File(fileName);
 
@@ -203,30 +201,24 @@ public class Driver_Greedy {
 
       return doubleSet;
     }
-    public static boolean expTest(Set<Double> arr,int threshold)
+    public static boolean expTest(SortedSet<Double> arr,int threshold)
     {
         double sum = 0;
         double mean = 0;
         double standardDeviation = 0;
-        int i = 0;
         for (double item : arr)
+        {
+            sum += item;
+        }
+        mean = sum / arr.size();
+        int i;
+        for (double item: arr)
         {
             if(i > threshold) {
                 break;
             }
-            sum += item;
-        }
-        mean = sum / i;
-
-        int j = 0;
-        for (double item: arr)
-        {
-            if(j > threshold) {
-                break;
-            }
-
             standardDeviation += Math.pow(item - mean, 2);
-            j++;
+            i++;
         }
         return standardDeviation/mean > 1;
     }
