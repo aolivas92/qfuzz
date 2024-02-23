@@ -3,7 +3,7 @@ public class calculateStandardDeviation {
     public static void calculateStandardDeviation() {
     }
 
-    public double calculateStandardDeviation(long[] array) {
+    public double[] calculateStandardDeviation(long[] array) {
         // get the sum of array
         long sum = 0;
         for (long i : array) {
@@ -20,6 +20,6 @@ public class calculateStandardDeviation {
             standardDeviation += Math.pow(num - mean, 2);
         }
 
-        return Math.sqrt(standardDeviation / length);
+        return [Math.sqrt(standardDeviation / length),(double)sum];
     }
 }
