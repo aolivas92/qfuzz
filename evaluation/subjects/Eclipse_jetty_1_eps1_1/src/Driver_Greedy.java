@@ -194,7 +194,7 @@ public class Driver_Greedy {
 
       return doubleSet;
     }
-    public static boolean expTest(Set<Double> arr,int threshold)
+    public static boolean expTest(SortedSet<Double> arr,int threshold)
     {
         double sum = 0;
         double mean = 0;
