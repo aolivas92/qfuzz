@@ -118,7 +118,7 @@ public class Driver_Greedy {
     // Log Everything, Alex
     String logPath = "./log/Log.txt";
     String data = Double.toString(analytics);
-    appendToLog(logPath, data, true);
+    writeToLog(logPath, data, true);
 
     // Read Everything from Unique file, Alex
     String uniqueLogPath = "./log/Unique_Log.txt";
@@ -134,7 +134,7 @@ public class Driver_Greedy {
 
     if (!uniqueValues.contains(analytics)) {
       uniqueValues.add(analytics);
-      appendToLog(uniqueLogPath, Double.toString(analytics), true);
+      writeToLog(uniqueLogPath, Double.toString(analytics), true);
     }
 
     // Size threshold -- should be set to 10, but for this subject there is only 3
@@ -145,7 +145,7 @@ public class Driver_Greedy {
       if (expTest(uniqueValues, threshold)) {
         testPassed = true;
         locationPassed = count;
-        appendToLog(logPath, "-1", true);
+        writeToLog(logPath, "-1", true);
       }
     }
 
@@ -154,13 +154,13 @@ public class Driver_Greedy {
       countPassed++;
     }
     String testStatusUpdate = count + 1 + " " + testPassed + " " + locationPassed + " " + countPassed;
-    appendToLog(testLogPath, testStatusUpdate, false);
+    writeToLog(testLogPath, testStatusUpdate, false);
 
     System.out.println("Done.");
   }
 
   /* Logging Algorithm */
-  public static void appendToLog(String fileName, String data, Boolean append) {
+  public static void writeToLog(String fileName, String data, Boolean append) {
     try {
       FileWriter writer = new FileWriter(fileName, append);
       PrintWriter out = new PrintWriter(writer);
