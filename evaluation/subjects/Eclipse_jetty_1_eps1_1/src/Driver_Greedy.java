@@ -139,10 +139,11 @@ public class Driver_Greedy {
 
     // Size threshold -- should be set to 10, but for this subject there is only 3
     // unique values
-    int threshold = 2;
+    int min_num_tail = 10;
+    int num_tail_samples = 50;
 
-    if (uniqueValues.size() > threshold) {
-      if (expTest(uniqueValues, threshold)) {
+    if (uniqueValues.size() > min_num_tail) {
+      if (expTest(uniqueValues, min_num_tail)) {
         testPassed = true;
         locationPassed = count;
         writeToLog(logPath, "-1", true);
