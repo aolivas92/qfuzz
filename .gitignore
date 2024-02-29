@@ -31,4 +31,4 @@ evaluation/*/*/fuzzer-out*
 *-log-*.txt
 *.lock
 .DS_Store
-*.project
+evaluation/subjects/*/.project
