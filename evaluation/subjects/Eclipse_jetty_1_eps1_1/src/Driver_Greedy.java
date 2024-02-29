@@ -139,11 +139,11 @@ public class Driver_Greedy {
 
     // Size threshold -- should be set to 10, but for this subject there is only 3
     // unique values
-    int min_num_tail = 10;
-    int num_tail_samples = 50;
+    int min_num_tail = 15;
+    int threshold = 10;
 
     if (uniqueValues.size() > min_num_tail) {
-      if (expTest(min_num_tail, uniqueValues)) {
+      if (expTest(threshold, uniqueValues)) {
         testPassed = true;
         locationPassed = count;
         writeToLog(logPath, "-1", true);
@@ -239,15 +239,11 @@ public class Driver_Greedy {
     return "error";
   }
 
-  public static boolean expTest(int numTailSamples, SortedSet<Double> sortedSet) {
-    // Go from the threshold to the size of the number of samples
-    int threshold = 2; // should be 10
-
-    int minNumTailSamples = Math.min(sortedSet.size(), numTailSamples);
-    numTailSamples = Math.max(minNumTailSamples, 15);
+  public static boolean expTest(int threshold, SortedSet<Double> sortedSet) {
+    int maxNumTailSamples = Math.min(sortedSet.size(), 50);
 
     // NumTailSamples will be given and at most will be 50.
-    for (int j = threshold; j <= numTailSamples; j++) {
+    for (int j = threshold; j <= maxNumTailSamples; j++) {
       // Sorted list of the cost difference that starts at j-1 to the end.
       List<Double> xTail = new ArrayList<>(sortedSet).subList(sortedSet.size() - j, sortedSet.size());
 
@@ -261,7 +257,7 @@ public class Driver_Greedy {
         return false;
       }
       // If j gets to the last sample then exp test has passed and return true.
-      if (j == numTailSamples) {
+      if (j == (maxNumTailSamples - threshold)) {
         return true;
       }
     }
