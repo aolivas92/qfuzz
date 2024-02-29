@@ -143,7 +143,7 @@ public class Driver_Greedy {
     int num_tail_samples = 50;
 
     if (uniqueValues.size() > min_num_tail) {
-      if (expTest(uniqueValues, min_num_tail)) {
+      if (expTest(min_num_tail, uniqueValues)) {
         testPassed = true;
         locationPassed = count;
         writeToLog(logPath, "-1", true);
@@ -239,28 +239,34 @@ public class Driver_Greedy {
     return "error";
   }
 
-  public static boolean expTest(SortedSet<Double> arr, int threshold) {
-    double sum = 0;
-    double mean = 0;
-    double standardDeviation = 0;
-    int i = 0;
-    for (double item : arr) {
-      if (i > threshold) {
-        break;
-      }
-      sum += item;
-      i++;
-    }
-    mean = sum / i;
-    int j = 0;
+  public static boolean expTest(int numTailSamples, SortedSet<Double> sortedSet) {
+    // Go from the threshold to the size of the number of samples
+    int threshold = 2; // should be 10
 
-    for (double item : arr) {
-      if (j > threshold) {
-        break;
+    int minNumTailSamples = Math.min(sortedSet.size(), numTailSamples);
+    numTailSamples = Math.max(minNumTailSamples, 15);
+
+    // NumTailSamples will be given and at most will be 50.
+    for (int j = threshold; j <= numTailSamples; j++) {
+      // Sorted list of the cost difference that starts at j-1 to the end.
+      List<Double> xTail = new ArrayList<>(sortedSet).subList(sortedSet.size() - j, sortedSet.size());
+      Collections.reverse(xTail);
+      //System.out.println(xTail);
+
+      // Do the exponential testing
+      double m = xTail.stream().mapToDouble(Double::doubleValue).average().orElse(0);
+      double st = Math.sqrt(xTail.stream().mapToDouble(val -> Math.pow(val - m, 2)).sum() / (xTail.size() - 1));
+      double cv = st / m;
+
+      // If the cv is greater than 1 then break.
+      if (cv > 1) {
+        return false;
       }
-      standardDeviation += Math.sqrt(Math.pow(item - mean, 2));
-      j++;
+      // If j gets to the last sample then exp test has passed and return true.
+      if (j == numTailSamples) {
+        return true;
+      }
     }
-    return standardDeviation / mean > 1;
+    return false; // Default return value
   }
 }
