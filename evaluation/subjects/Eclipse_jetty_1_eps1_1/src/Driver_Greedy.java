@@ -250,12 +250,10 @@ public class Driver_Greedy {
     for (int j = threshold; j <= numTailSamples; j++) {
       // Sorted list of the cost difference that starts at j-1 to the end.
       List<Double> xTail = new ArrayList<>(sortedSet).subList(sortedSet.size() - j, sortedSet.size());
-      Collections.reverse(xTail);
-      //System.out.println(xTail);
 
       // Do the exponential testing
       double m = xTail.stream().mapToDouble(Double::doubleValue).average().orElse(0);
-      double st = Math.sqrt(xTail.stream().mapToDouble(val -> Math.pow(val - m, 2)).sum() / (xTail.size() - 1));
+      double st = Math.sqrt(xTail.stream().mapToDouble(val -> Math.pow(val - m, 2)).average().orElse(0));
       double cv = st / m;
 
       // If the cv is greater than 1 then break.
