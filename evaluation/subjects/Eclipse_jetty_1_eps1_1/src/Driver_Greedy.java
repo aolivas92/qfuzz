@@ -125,7 +125,7 @@ public class Driver_Greedy {
     SortedSet<Double> uniqueValues = readDoubleSetLog(uniqueLogPath);
 
     // Read Test Log file, Alex
-    String testLogPath = "./log/testLogPath.txt";
+    String testLogPath = "./log/testLog.txt";
     String testStatus = readTestLog(testLogPath);
     long count = Long.parseLong(testStatus.split(" ")[0]);
     Boolean testPassed = Boolean.parseBoolean(testStatus.split(" ")[2]);
