@@ -88,34 +88,52 @@ public class Driver_Greedy {
     // Log Everything, Alex
     String logPath = "./log/Log.txt";
     String data = Double.toString(analytics);
-    appendToLog(logPath, data);
+    writeToLog(logPath, data, true);
 
     // Read Everything from Unique file, Alex
     String uniqueLogPath = "./log/Unique_Log.txt";
     SortedSet<Double> uniqueValues = readDoubleSetLog(uniqueLogPath);
 
+    // Read Test Log file, Alex
+    String testLogPath = "./log/testLog.txt";
+    String testStatus = readTestLog(testLogPath);
+    long count = Long.parseLong(testStatus.split(" ")[0]);
+    Boolean testPassed = Boolean.parseBoolean(testStatus.split(" ")[2]);
+    long locationPassed = Long.parseLong(testStatus.split(" ")[2]);
+    long countPassed = Long.parseLong(testStatus.split(" ")[3]);
+
     if (!uniqueValues.contains(analytics)) {
       uniqueValues.add(analytics);
-      appendToLog(uniqueLogPath, Double.toString(analytics));
+      writeToLog(uniqueLogPath, Double.toString(analytics), true);
     }
 
     // Size threshold -- should be set to 10, but for this subject there is only 3
     // unique values
-    int threshold = 2;
+    int min_num_tail = 15;
+    int threshold = 10;
 
-    if (uniqueValues.size() > threshold) {
-      if (expTest(uniqueValues, threshold)) {
-        appendToLog(logPath, "-1");
+    if (uniqueValues.size() >= min_num_tail) {
+      if (expTest(threshold, uniqueValues)) {
+        testPassed = true;
+        locationPassed = count;
+        writeToLog(logPath, "-1", true);
       }
     }
+
+    // Write to test file
+    if (testPassed) {
+      countPassed++;
+    }
+    String testStatusUpdate = count + 1 + " " + testPassed + " " + locationPassed + " " + countPassed;
+    writeToLog(testLogPath, testStatusUpdate, false);
 
     System.out.println("Done.");
   }
 
   /* Logging Algorithm */
-  public static void appendToLog(String fileName, String data) {
+  public static void writeToLog(String fileName, String data, Boolean append) {
     try {
-      FileWriter writer = new FileWriter(fileName, true);
+      FileWriter writer = new FileWriter(fileName, append);
       PrintWriter out = new PrintWriter(writer);
 
       out.println(data);
@@ -160,28 +178,59 @@ public class Driver_Greedy {
     return doubleSet;
   }
 
-  public static boolean expTest(SortedSet<Double> arr, int threshold) {
-    double sum = 0;
-    double mean = 0;
-    double standardDeviation = 0;
-    int i = 0;
-    for (double item : arr) {
-      if (i > threshold) {
-        break;
-      }
-      sum += item;
-      i++;
-    }
-    mean = sum / i;
-    int j = 0;
+  /* Read Log File */
+  public static String readTestLog(String fileName) {
+    File file = new File(fileName);
 
-    for (double item : arr) {
-      if (j > threshold) {
-        break;
+    try {
+      // If file doesn't exists, create one and return empty set
+      if (!file.exists()) {
+        file.createNewFile();
+        // Counter, Exponential Test Passed, location passed, counter after passed
+        return "0 false 0 0";
       }
-      standardDeviation += Math.sqrt(Math.pow(item - mean, 2));
-      j++;
+
+      // Read file if it exists
+      BufferedReader reader = new BufferedReader(new FileReader(fileName));
+      String line;
+      while ((line = reader.readLine()) != null) {
+        try {
+          return line;
+        } catch (NumberFormatException e) {
+          e.printStackTrace();
+        }
+      }
+
+      reader.close();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-    return standardDeviation / mean > 1;
+
+    return "error";
+  }
+
+  public static boolean expTest(int threshold, SortedSet<Double> sortedSet) {
+    int maxNumTailSamples = Math.min(sortedSet.size(), 50);
+
+    // NumTailSamples will be given and at most will be 50.
+    for (int j = threshold; j <= maxNumTailSamples; j++) {
+      // Sorted list of the cost difference that starts at j-1 to the end.
+      List<Double> xTail = new ArrayList<>(sortedSet).subList(sortedSet.size() - j, sortedSet.size());
+
+      // Do the exponential testing
+      double m = xTail.stream().mapToDouble(Double::doubleValue).average().orElse(0);
+      double st = Math.sqrt(xTail.stream().mapToDouble(val -> Math.pow(val - m, 2)).average().orElse(0));
+      double cv = st / m;
+
+      // If the cv is greater than 1 then break.
+      if (cv > 1) {
+        return false;
+      }
+      // If j gets to the last sample then exp test has passed and return true.
+      if (j == (maxNumTailSamples - threshold)) {
+        return true;
+      }
+    }
+    return false; // Default return value
   }
 }
