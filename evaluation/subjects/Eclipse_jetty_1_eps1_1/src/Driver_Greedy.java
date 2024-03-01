@@ -250,7 +250,11 @@ public class Driver_Greedy {
       // Do the exponential testing
       double m = xTail.stream().mapToDouble(Double::doubleValue).average().orElse(0);
       double st = Math.sqrt(xTail.stream().mapToDouble(val -> Math.pow(val - m, 2)).average().orElse(0));
-      double cv = st / m;
+      double cv = 0;
+      if (m == 0) {
+        cv = st / m;
+        continue;
+      }
 
       // If the cv is greater than 1 then break.
       if (cv > 1) {
