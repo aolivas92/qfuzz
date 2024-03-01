@@ -195,7 +195,7 @@ public class Driver_Greedy {
       if (!file.exists()) {
         file.createNewFile();
         // Counter, Exponential Test Passed, location passed, counter after passed
-        return "0 false 0 0";
+        return "0 false -1 -1";
       }
 
       // Read file if it exists
