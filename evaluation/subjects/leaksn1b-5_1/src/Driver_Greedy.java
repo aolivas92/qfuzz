@@ -133,6 +133,14 @@ public class Driver_Greedy {
   /* Logging Algorithm */
   public static void writeToLog(String fileName, String data, Boolean append) {
     try {
+      // Check if dir exists
+      String directoryPath = "./log";
+      File directory = new File(directoryPath);
+      if (!directory.exists()) {
+        directory.mkdir();
+      }
+
+      // Write to log file
       FileWriter writer = new FileWriter(fileName, append);
       PrintWriter out = new PrintWriter(writer);
 
