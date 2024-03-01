@@ -145,7 +145,7 @@ public class Driver_Greedy {
     if (testPassed == false && uniqueValues.size() >= min_num_tail) {
       if (expTest(threshold, uniqueValues)) {
         testPassed = true;
-        locationPassed = count;
+        locationPassed = count + 1;
         writeToLog(logPath, "-1", true);
       }
     }
