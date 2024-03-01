@@ -128,7 +128,7 @@ public class Driver_Greedy {
     String testLogPath = "./log/testLog.txt";
     String testStatus = readTestLog(testLogPath);
     long count = Long.parseLong(testStatus.split(" ")[0]);
-    Boolean testPassed = Boolean.parseBoolean(testStatus.split(" ")[2]);
+    Boolean testPassed = Boolean.parseBoolean(testStatus.split(" ")[1]);
     long locationPassed = Long.parseLong(testStatus.split(" ")[2]);
     long countPassed = Long.parseLong(testStatus.split(" ")[3]);
 
@@ -142,7 +142,7 @@ public class Driver_Greedy {
     int min_num_tail = 15;
     int threshold = 10;
 
-    if (testPassed == false && uniqueValues.size() >= min_num_tail) {
+    if (!testPassed && uniqueValues.size() >= min_num_tail) {
       if (expTest(threshold, uniqueValues)) {
         testPassed = true;
         locationPassed = count;
