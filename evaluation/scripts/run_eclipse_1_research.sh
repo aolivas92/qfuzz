@@ -23,7 +23,7 @@ declare -a subjects=(
 "Eclipse_jetty_1_eps1_1"
 )
 
-K=10 # maximum number of partitions
+K=2 # maximum number of partitions
 
 ##########################################
 
