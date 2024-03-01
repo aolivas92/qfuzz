@@ -112,7 +112,7 @@ public class Driver_Greedy {
     int min_num_tail = 15;
     int threshold = 10;
 
-    if (uniqueValues.size() >= min_num_tail && testPassed == false) {
+    if (testPassed == false && uniqueValues.size() >= min_num_tail) {
       if (expTest(threshold, uniqueValues)) {
         testPassed = true;
         locationPassed = count;
@@ -124,7 +124,7 @@ public class Driver_Greedy {
     if (testPassed) {
       countPassed++;
     }
-    String testStatusUpdate = count + 1 + " " + testPassed + " " + locationPassed + " " + countPassed;
+    String testStatusUpdate = (count + 1) + " " + testPassed + " " + locationPassed + " " + countPassed;
     writeToLog(testLogPath, testStatusUpdate, false);
 
     System.out.println("Done.");
