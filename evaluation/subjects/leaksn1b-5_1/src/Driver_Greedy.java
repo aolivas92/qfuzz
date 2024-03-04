@@ -101,31 +101,46 @@ public class Driver_Greedy {
     Boolean testPassed = Boolean.parseBoolean(testStatus.split(" ")[1]);
     long locationPassed = Long.parseLong(testStatus.split(" ")[2]);
     long countPassed = Long.parseLong(testStatus.split(" ")[3]);
-
-    if (!uniqueValues.contains(analytics)) {
-      uniqueValues.add(analytics);
-      writeToLog(uniqueLogPath, Double.toString(analytics), true);
-    }
+    long numUniqueSamples = Long.parseLong(testStatus.split(" ")[4]);
 
     // Size threshold -- should be set to 10, but for this subject there is only 3
     // unique values
     int min_num_tail = 15;
     int threshold = 10;
 
-    if (testPassed == false && uniqueValues.size() >= min_num_tail) {
-      if (expTest(threshold, uniqueValues)) {
-        testPassed = true;
-        locationPassed = count + 1;
-        writeToLog(logPath, "-1", true);
-      }
-    }
-
-    // Write to test file
+    count += 1;
     if (testPassed) {
       countPassed++;
     }
-    String testStatusUpdate = (count + 1) + " " + testPassed + " " + locationPassed + " " + countPassed;
-    writeToLog(testLogPath, testStatusUpdate, false);
+    Boolean testLogAppend = false;
+
+    String testStatusUpdate = String.format("%d %b %d %d %d",
+        count, testPassed, locationPassed, countPassed, numUniqueSamples);
+
+    if (!uniqueValues.contains(analytics)) {
+      uniqueValues.add(analytics);
+      writeToLog(uniqueLogPath, Double.toString(analytics), true);
+
+      // If we found a new unique value, we have more than 15 unique values, and the
+      // size of unique values is divisble by 5.
+      if (uniqueValues.size() >= min_num_tail && uniqueValues.size() % 5 == 0 && expTest(threshold, uniqueValues) > 0) {
+        writeToLog(logPath, "-1", true);
+
+        // testLog: total count, if test passed, locationg passed, count after passed,
+        // num Unique samples when passed.
+        testPassed = true;
+        locationPassed = count;
+        countPassed = 0;
+        numUniqueSamples = uniqueValues.size();
+        testLogAppend = true;
+
+        // Add to testLog that we got another pass
+        testStatusUpdate = String.format("%d %b %d %d %d",
+            count, testPassed, locationPassed, countPassed, numUniqueSamples);
+      }
+    }
+
+    writeToLog(testLogPath, testStatusUpdate, testLogAppend);
 
     System.out.println("Done.");
   }
@@ -194,22 +209,21 @@ public class Driver_Greedy {
       // If file doesn't exists, create one and return empty set
       if (!file.exists()) {
         file.createNewFile();
-        // Counter, Exponential Test Passed, location passed, counter after passed
-        return "0 false -1 -1";
+        // testLog: total count, if test passed, locationg passed, count after passed,
+        // num Unique samples when passed.
+        return "0 false -1 -1 -1";
       }
 
       // Read file if it exists
       BufferedReader reader = new BufferedReader(new FileReader(fileName));
       String line;
+      String lastLine = null;
       while ((line = reader.readLine()) != null) {
-        try {
-          return line;
-        } catch (NumberFormatException e) {
-          e.printStackTrace();
-        }
+        lastLine = line;
       }
 
       reader.close();
+      return lastLine;
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -217,7 +231,7 @@ public class Driver_Greedy {
     return "error";
   }
 
-  public static boolean expTest(int threshold, SortedSet<Double> sortedSet) {
+  public static Integer expTest(int threshold, SortedSet<Double> sortedSet) {
     int maxNumTailSamples = Math.min(sortedSet.size(), 50);
 
     // NumTailSamples will be given and at most will be 50.
@@ -236,13 +250,13 @@ public class Driver_Greedy {
 
       // If the cv is greater than 1 then break.
       if (cv > 1) {
-        return false;
+        return -1;
       }
       // If j gets to the last sample then exp test has passed and return true.
       if (j == (maxNumTailSamples - threshold)) {
-        return true;
+        return maxNumTailSamples;
       }
     }
-    return false; // Default return value
+    return -1; // Default return value
   }
 }
