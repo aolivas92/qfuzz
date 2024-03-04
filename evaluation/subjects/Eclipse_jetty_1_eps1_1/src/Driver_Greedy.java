@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.stream.Stream;
 import java.util.SortedSet;
 
 import edu.cmu.sv.kelinci.Kelinci;
@@ -118,7 +119,7 @@ public class Driver_Greedy {
     // Log Everything, Alex
     String logPath = "./log/Log.txt";
     String data = Double.toString(analytics);
-    writeToLog(logPath, data, true);
+    writeToLog(logPath, data);
 
     // Read Everything from Unique file, Alex
     String uniqueLogPath = "./log/Unique_Log.txt";
@@ -126,12 +127,12 @@ public class Driver_Greedy {
 
     // Read Test Log file, Alex
     String testLogPath = "./log/testLog.txt";
-    String testStatus = readTestLog(testLogPath);
-    long count = Long.parseLong(testStatus.split(" ")[0]);
-    Boolean testPassed = Boolean.parseBoolean(testStatus.split(" ")[1]);
-    long locationPassed = Long.parseLong(testStatus.split(" ")[2]);
-    long countPassed = Long.parseLong(testStatus.split(" ")[3]);
-    long numUniqueSamples = Long.parseLong(testStatus.split(" ")[4]);
+    String[] testStatus = readTestLog(testLogPath);
+    long count = Long.parseLong(testStatus[0].split(" ")[0]);
+    Boolean testPassed = Boolean.parseBoolean(testStatus[0].split(" ")[1]);
+    long locationPassed = Long.parseLong(testStatus[0].split(" ")[2]);
+    long countPassed = Long.parseLong(testStatus[0].split(" ")[3]);
+    long numUniqueSamples = Long.parseLong(testStatus[0].split(" ")[4]);
 
     // Size threshold -- should be set to 10, but for this subject there is only 3
     // unique values
@@ -142,19 +143,18 @@ public class Driver_Greedy {
     if (testPassed) {
       countPassed++;
     }
-    Boolean testLogAppend = false;
 
-    String testStatusUpdate = String.format("%d %b %d %d %d",
+    testStatus[0] = String.format("%d %b %d %d %d",
         count, testPassed, locationPassed, countPassed, numUniqueSamples);
 
     if (!uniqueValues.contains(analytics)) {
       uniqueValues.add(analytics);
-      writeToLog(uniqueLogPath, Double.toString(analytics), true);
+      writeToLog(uniqueLogPath, Double.toString(analytics));
 
       // If we found a new unique value, we have more than 15 unique values, and the
       // size of unique values is divisble by 5.
       if (uniqueValues.size() >= min_num_tail && uniqueValues.size() % 5 == 0 && expTest(threshold, uniqueValues) > 0) {
-        writeToLog(logPath, "-1", true);
+        writeToLog(logPath, "-1");
 
         // testLog: total count, if test passed, locationg passed, count after passed,
         // num Unique samples when passed.
@@ -162,21 +162,21 @@ public class Driver_Greedy {
         locationPassed = count;
         countPassed = 0;
         numUniqueSamples = uniqueValues.size();
-        testLogAppend = true;
 
         // Add to testLog that we got another pass
-        testStatusUpdate = String.format("%d %b %d %d %d",
-            count, testPassed, locationPassed, countPassed, numUniqueSamples);
+        List<String> testStatusUpdate = Arrays.asList(String.format("%d %b %d %d %d",
+            count, testPassed, locationPassed, countPassed, numUniqueSamples));
+        testStatus = Stream.concat(Stream.of(testStatusUpdate), Arrays.stream(testStatus)).toArray(String[]::new);
       }
     }
 
-    writeToLog(testLogPath, testStatusUpdate, testLogAppend);
+    writeArrayToLog(testLogPath, testStatus);
 
     System.out.println("Done.");
   }
 
   /* Logging Algorithm */
-  public static void writeToLog(String fileName, String data, Boolean append) {
+  public static void writeToLog(String fileName, String data) {
     try {
       // Check if dir exists
       String directoryPath = "./log";
@@ -186,10 +186,35 @@ public class Driver_Greedy {
       }
 
       // Write to log file
-      FileWriter writer = new FileWriter(fileName, append);
+      FileWriter writer = new FileWriter(fileName, true);
       PrintWriter out = new PrintWriter(writer);
 
       out.println(data);
+
+      out.close();
+      writer.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /* Logging Algorithm */
+  public static void writeArrayToLog(String fileName, String[] data) {
+    try {
+      // Check if dir exists
+      String directoryPath = "./log";
+      File directory = new File(directoryPath);
+      if (!directory.exists()) {
+        directory.mkdir();
+      }
+
+      // Write to log file
+      FileWriter writer = new FileWriter(fileName, false);
+      PrintWriter out = new PrintWriter(writer);
+
+      for (String line : data) {
+        out.println(line);
+      }
 
       out.close();
       writer.close();
@@ -232,7 +257,8 @@ public class Driver_Greedy {
   }
 
   /* Read Log File */
-  public static String readTestLog(String fileName) {
+  public static String[] readTestLog(String fileName) {
+    List<String> lines = new ArrayList<>();
     File file = new File(fileName);
 
     try {
@@ -241,24 +267,23 @@ public class Driver_Greedy {
         file.createNewFile();
         // testLog: total count, if test passed, locationg passed, count after passed,
         // num Unique samples when passed.
-        return "0 false -1 -1 -1";
+        lines.add("0 false -1 -1 -1");
+        return lines.toArray(new String[lines.size()]);
       }
 
       // Read file if it exists
       BufferedReader reader = new BufferedReader(new FileReader(fileName));
       String line;
-      String lastLine = null;
       while ((line = reader.readLine()) != null) {
-        lastLine = line;
+        lines.add(line);
       }
 
       reader.close();
-      return lastLine;
     } catch (IOException e) {
       e.printStackTrace();
     }
 
-    return "error";
+    return lines.toArray(new String[lines.size()]);
   }
 
   public static Integer expTest(int threshold, SortedSet<Double> sortedSet) {
