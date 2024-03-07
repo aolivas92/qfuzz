@@ -87,16 +87,16 @@ public class Driver_Greedy {
     double analytics = Math.abs(observations[0] - observations[1]);
 
     // Log Everything, Alex
-    String logPath = "./log/Log.txt";
+    String logPath = "Log.txt";
     String data = Double.toString(analytics);
     writeToLog(logPath, data, true);
 
     // Read Everything from Unique file, Alex
-    String uniqueLogPath = "./log/Unique_Log.txt";
+    String uniqueLogPath = "Unique_Log.txt";
     SortedSet<Double> uniqueValues = readDoubleSetLog(uniqueLogPath);
 
     // Read Test Log file, Alex
-    String countLog = "./log/Count_Log.txt";
+    String countLog = "Count_Log.txt";
     double count = readDoubleLog(countLog);
     count += 1;
     writeToLog(countLog, Double.toString(count), false);
@@ -106,7 +106,7 @@ public class Driver_Greedy {
     int min_num_tail = 15;
     int threshold = 10;
 
-    String testPassedLog = "./log/Test_Passed_Log.txt";
+    String testPassedLog = "Test_Passed_Log.txt";
 
     if (!uniqueValues.contains(analytics)) {
       uniqueValues.add(analytics);
@@ -129,13 +129,15 @@ public class Driver_Greedy {
   public static void writeToLog(String fileName, String data, Boolean append) {
     try {
       // Check if dir exists
-      String directoryPath = "./log";
-      File directory = new File(directoryPath);
+      // Folder Path
+      String dirPath = "./log/log_5min_1/";
+      File directory = new File(dirPath);
       if (!directory.exists()) {
         directory.mkdir();
       }
 
       // Write to log file
+      fileName = dirPath + fileName;
       FileWriter writer = new FileWriter(fileName, append);
       PrintWriter out = new PrintWriter(writer);
 
