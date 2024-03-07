@@ -86,20 +86,22 @@ public class Driver_Greedy {
     // Calculate analytics, Nathan
     double analytics = Math.abs(observations[0] - observations[1]);
 
+    String dirPath = "./log/log_5min_1/";
+
     // Log Everything, Alex
     String logPath = "Log.txt";
     String data = Double.toString(analytics);
-    writeToLog(logPath, data, true);
+    writeToLog(logPath, data, dirPath, true);
 
     // Read Everything from Unique file, Alex
     String uniqueLogPath = "Unique_Log.txt";
-    SortedSet<Double> uniqueValues = readDoubleSetLog(uniqueLogPath);
+    SortedSet<Double> uniqueValues = readDoubleSetLog(dirPath + uniqueLogPath);
 
     // Read Test Log file, Alex
     String countLog = "Count_Log.txt";
-    Long count = readLongLog(countLog);
+    Long count = readLongLog(dirPath + countLog);
     count += 1;
-    writeToLog(countLog, Double.toString(count), false);
+    writeToLog(countLog, Double.toString(count), dirPath, false);
 
     // Size threshold -- should be set to 10, but for this subject there is only 3
     // unique values
@@ -110,15 +112,15 @@ public class Driver_Greedy {
 
     if (!uniqueValues.contains(analytics)) {
       uniqueValues.add(analytics);
-      writeToLog(uniqueLogPath, Double.toString(analytics), true);
+      writeToLog(uniqueLogPath, Double.toString(analytics), dirPath, true);
 
       // If we found a new unique value, we have more than 15 unique values, and the
       // size of unique values is divisble by 5.
       if (uniqueValues.size() >= min_num_tail && uniqueValues.size() % 5 == 0 && expTest(threshold, uniqueValues) > 0) {
-        writeToLog(logPath, "-1", true);
+        writeToLog(logPath, "-1", dirPath, true);
 
         String testInfo = count + " " + uniqueValues.size();
-        writeToLog(testPassedLog, testInfo, true);
+        writeToLog(testPassedLog, testInfo, dirPath, true);
       }
     }
 
@@ -126,11 +128,10 @@ public class Driver_Greedy {
   }
 
   /* Logging Algorithm */
-  public static void writeToLog(String fileName, String data, Boolean append) {
+  public static void writeToLog(String fileName, String data, String dirPath, Boolean append) {
     try {
       // Check if dir exists
       // Folder Path
-      String dirPath = "./log/log_5min_1/";
       File directory = new File(dirPath);
       if (!directory.exists()) {
         directory.mkdirs();
