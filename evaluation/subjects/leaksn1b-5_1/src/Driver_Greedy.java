@@ -97,7 +97,7 @@ public class Driver_Greedy {
 
     // Read Test Log file, Alex
     String countLog = "Count_Log.txt";
-    double count = readDoubleLog(countLog);
+    Long count = readLongLog(countLog);
     count += 1;
     writeToLog(countLog, Double.toString(count), false);
 
@@ -184,9 +184,9 @@ public class Driver_Greedy {
   }
 
   /* Read Log File */
-  public static Double readDoubleLog(String fileName) {
+  public static long readLongLog(String fileName) {
     File file = new File(fileName);
-    Double num = -1.0;
+    Long num = (long) -1;
 
     try {
       // If file doesn't exists, create one and return empty set
@@ -194,14 +194,14 @@ public class Driver_Greedy {
         file.createNewFile();
         // testLog: total count, if test passed, locationg passed, count after passed,
         // num Unique samples when passed.
-        return 0.0;
+        return 0;
       }
 
       // Read file if it exists
       BufferedReader reader = new BufferedReader(new FileReader(fileName));
       String line;
       while ((line = reader.readLine()) != null) {
-        num = Double.parseDouble(line);
+        num = Long.parseLong(line);
       }
 
       reader.close();
