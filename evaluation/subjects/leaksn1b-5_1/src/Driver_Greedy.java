@@ -133,7 +133,7 @@ public class Driver_Greedy {
       String dirPath = "./log/log_5min_1/";
       File directory = new File(dirPath);
       if (!directory.exists()) {
-        directory.mkdir();
+        directory.mkdirs();
       }
 
       // Write to log file
