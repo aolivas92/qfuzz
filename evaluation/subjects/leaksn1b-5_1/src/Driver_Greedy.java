@@ -101,7 +101,7 @@ public class Driver_Greedy {
     String countLog = "Count_Log.txt";
     Long count = readLongLog(dirPath + countLog);
     count += 1;
-    writeToLog(countLog, Double.toString(count), dirPath, false);
+    writeToLog(countLog, Long.toString(count), dirPath, false);
 
     // Size threshold -- should be set to 10, but for this subject there is only 3
     // unique values
