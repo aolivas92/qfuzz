@@ -20,23 +20,14 @@ step_size_eval=30 # every 30 seconds (for reporting)
 driver="Driver_Greedy"
 
 declare -a subjects=(
- #
  "Eclipse_jetty_1_eps1_1"
- #
  "leaksn1b-5_1"
- #
  "blazer_loopandbranch_safe"
- #
  "blazer_modpow1_unsafe"
- #
  "blazer_modpow2_unsafe"
- #
  "blazer_k96_unsafe"
- #
  "blazer_gpt14_unsafe"
- #
  "blazer_login_unsafe"
- #
 )
 
 K=100 # maximum number of partitions
