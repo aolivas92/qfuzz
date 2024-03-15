@@ -16,7 +16,7 @@ with open(path + '/Test_Passed_Log.txt', 'r') as file:
 
 splitteed_array_FINAL = []
 for i in indices:
-    splitteed_array_FINAL.append(split_arr[:i - 1])
+    splitteed_array_FINAL.append(split_arr[:i])
     splitteed_array_FINAL.append(split_arr[i:])
 
 le_data = pd.DataFrame(splitteed_array_FINAL)

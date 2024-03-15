@@ -1,6 +1,6 @@
 import pandas as pd
 
-path = "./log/log_5min_1"
+path = "../log/log_30min_1"
 
 with open(path + '/Log.txt', 'r') as file:
     whole_log = file.readlines()
@@ -16,9 +16,9 @@ with open(path + '/Test_Passed_Log.txt', 'r') as file:
 
 splitteed_array_FINAL = []
 for i in indices:
-    splitteed_array_FINAL.append(split_arr[:i - 1])
+    splitteed_array_FINAL.append(split_arr[:i])
     splitteed_array_FINAL.append(split_arr[i:])
 
 le_data = pd.DataFrame(splitteed_array_FINAL)
 le_data = le_data.transpose()
-le_data.to_csv(path + "/output.csv")
+le_data.to_csv(path + "/output2.csv")
