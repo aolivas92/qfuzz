@@ -12,9 +12,9 @@ trap "exit" INT
 
 echo "Run QFuzz on the Themis subjects..."
 
-number_of_runs=30 # 30 repetitions
+number_of_runs=1 # 30 repetitions
 time_bound=1800 # 1800 sec = 30 min
-step_size_eval=30 # every 30 seconds (for reporting)
+step_size_eval=1 # every 30 seconds (for reporting)
 
 #driver="Driver_KDynamic"
 driver="Driver_Greedy"
@@ -30,7 +30,7 @@ declare -a subjects=(
  "blazer_login_unsafe"
 )
 
-K=100 # maximum number of partitions
+K=2 # maximum number of partitions
 
 ##########################################
 
