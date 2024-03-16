@@ -157,7 +157,7 @@ public class Driver_Greedy {
         // Calculate analytics, Nathan
         double analytics = Math.abs(observations[0] - observations[1]);
 
-        String dirPath = "./log/log_5min_1/";
+        String dirPath = "./log/log_30min_1/";
 
         // Log Everything, Alex
         String logPath = "Log.txt";
