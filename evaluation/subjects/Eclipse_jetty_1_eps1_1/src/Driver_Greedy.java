@@ -116,7 +116,7 @@ public class Driver_Greedy {
     // Calculate analytics, Nathan
     double analytics = Math.abs(observations[0] - observations[1]);
 
-    String dirPath = "./log/log_30min_2/";
+    String dirPath = "./log/log_5min_2/";
 
     // Log Everything, Alex
     String logPath = "Log.txt";
@@ -149,8 +149,11 @@ public class Driver_Greedy {
       if (uniqueValues.size() >= min_num_tail && uniqueValues.size() % 5 == 0 && expTest(threshold, uniqueValues) > 0) {
         writeToLog(logPath, "-1", dirPath, true);
 
-        String testInfo = count + " " + uniqueValues.size();
+        long currTime = System.nanoTime();
+        String time = String.valueOf(currTime);
+        String testInfo = count + " " + uniqueValues.size() + " " + time;
         writeToLog(testPassedLog, testInfo, dirPath, true);
+
       }
     }
 
@@ -165,6 +168,9 @@ public class Driver_Greedy {
       File directory = new File(dirPath);
       if (!directory.exists()) {
         directory.mkdirs();
+        long startTime = System.nanoTime();
+        String time = String.valueOf(startTime);
+        writeToLog("Test_Passed_Log.txt", time, dirPath, false);
       }
 
       // Write to log file

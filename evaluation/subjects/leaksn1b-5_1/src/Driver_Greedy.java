@@ -119,6 +119,10 @@ public class Driver_Greedy {
       if (uniqueValues.size() >= min_num_tail && uniqueValues.size() % 5 == 0 && expTest(threshold, uniqueValues) > 0) {
         writeToLog(logPath, "-1", dirPath, true);
 
+        long currTime = System.nanoTime();
+        String time = String.valueOf(currTime);
+        String testInfo = count + " " + uniqueValues.size() + " " + time;
+
         String testInfo = count + " " + uniqueValues.size();
         writeToLog(testPassedLog, testInfo, dirPath, true);
       }
@@ -135,6 +139,10 @@ public class Driver_Greedy {
       File directory = new File(dirPath);
       if (!directory.exists()) {
         directory.mkdirs();
+
+        long startTime = System.nanoTime();
+        String time = String.valueOf(startTime);
+        writeToLog("Test_Passed_Log.txt", time, dirPath, false);
       }
 
       // Write to log file
