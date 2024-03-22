@@ -140,7 +140,7 @@ public class Driver_Greedy_Guarantee {
       if (!directory.exists()) {
         directory.mkdirs();
         long startTime = System.nanoTime();
-        String time = "0" + "0" + String.valueOf(startTime);
+        String time = "0 " + "0 " + String.valueOf(startTime);
         writeToLog("Test_Passed_Log.txt", time, dirPath, false);
       }
 
