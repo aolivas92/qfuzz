@@ -93,7 +93,7 @@ public class Driver_Greedy_Guarantee {
     // Calculate analytics, Nathan
     double analytics = Math.abs(observations[0] - observations[1]);
 
-    String dirPath = "./log/log_30min_3/";
+    String dirPath = "./log/log_5min_2/";
 
     // Log Everything, Alex
     String logPath = "Log.txt";
@@ -146,7 +146,7 @@ public class Driver_Greedy_Guarantee {
       if (!directory.exists()) {
         directory.mkdirs();
         long startTime = System.nanoTime();
-        String time = String.valueOf(startTime);
+        String time = "0 " + "0 " + String.valueOf(startTime);
         writeToLog("Test_Passed_Log.txt", time, dirPath, false);
       }
 
