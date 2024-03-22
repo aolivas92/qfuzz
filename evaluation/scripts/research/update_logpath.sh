@@ -16,7 +16,7 @@ declare -a subjects=(
 #driver="Driver_Greedy"
 driver="Driver_Greedy_Guarantee"
 
- new_dir_path="./log/log_30min_3/"
+ new_dir_path="./log/log_30min_10/"
 
  total_number_subjects=${#subjects[@]}
  echo
