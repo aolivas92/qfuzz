@@ -3,21 +3,13 @@ trap "exit" INT
 declare -a subjects=(
  #
  "Eclipse_jetty_1_eps1_1"
- #
  "leaksn1b-5_1"
- #
- "blazer_loopandbranch_safe"
- #
+ "blazer_loopandbranch_unsafe"
  "blazer_modpow1_unsafe"
- #
  "blazer_modpow2_unsafe"
- #
  "blazer_k96_unsafe"
- #
  "blazer_gpt14_unsafe"
- #
  "blazer_login_unsafe"
- #
  )
 
  run_counter=0

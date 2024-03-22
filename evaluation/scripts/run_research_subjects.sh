@@ -17,12 +17,13 @@ time_bound=1800 # 1800 sec = 30 min
 step_size_eval=1 # every 30 seconds (for reporting)
 
 #driver="Driver_KDynamic"
-driver="Driver_Greedy"
+#driver="Driver_Greedy"
+driver="Driver_Greedy_Guarantee"
 
 declare -a subjects=(
  "Eclipse_jetty_1_eps1_1"
  "leaksn1b-5_1"
- "blazer_loopandbranch_safe"
+ "blazer_loopandbranch_unsafe"
  "blazer_modpow1_unsafe"
  "blazer_modpow2_unsafe"
  "blazer_k96_unsafe"
