@@ -123,7 +123,6 @@ public class Driver_Greedy {
         String time = String.valueOf(currTime);
         String testInfo = count + " " + uniqueValues.size() + " " + time;
 
-        String testInfo = count + " " + uniqueValues.size();
         writeToLog(testPassedLog, testInfo, dirPath, true);
       }
     }
