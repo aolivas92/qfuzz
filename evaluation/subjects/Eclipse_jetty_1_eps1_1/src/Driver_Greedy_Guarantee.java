@@ -21,7 +21,7 @@ import java.io.FileWriter;
 import java.lang.NumberFormatException;
 import java.io.PrintWriter;
 
-public class Driver_Greedy {
+public class Driver_Greedy_Guarantee {
 
   /* Maximum number of different observations. */
   public final static int K = 2;
@@ -113,6 +113,7 @@ public class Driver_Greedy {
     PartitionSet clusters = PartitionSet.createFromObservations(epsilon, observations, clusterAlgorithm);
     Kelinci.setObserverdClusters(clusters.getClusterAverageValues(), clusters.getMinimumDeltaValue());
 
+    // Start of research
     // Start of research
     // Calculate analytics, Nathan
     double analytics = Math.abs(observations[0] - observations[1]);
