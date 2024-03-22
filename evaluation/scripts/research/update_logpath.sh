@@ -2,9 +2,9 @@ trap "exit" INT
 
 declare -a subjects=(
  #
- "Eclipse_jetty_1_eps1_1"
- "leaksn1b-5_1"
- "blazer_loopandbranch_safe"
+#  "Eclipse_jetty_1_eps1_1"
+#  "leaksn1b-5_1"
+ "blazer_loopandbranch_unsafe"
  "blazer_modpow1_unsafe"
  "blazer_modpow2_unsafe"
  "blazer_k96_unsafe"
@@ -13,9 +13,10 @@ declare -a subjects=(
  )
  
  #driver="Driver_KDynamic"
- driver="Driver_Greedy"
+#driver="Driver_Greedy"
+driver="Driver_Greedy_Guarantee"
 
- new_dir_path="./log/log_30min_2/"
+ new_dir_path="./log/log_30min_3/"
 
  total_number_subjects=${#subjects[@]}
  echo
