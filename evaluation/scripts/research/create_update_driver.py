@@ -17,6 +17,8 @@ start_string = "// Start of research"
 destination_code_start_string_1 = "// Calculate analytics, Nathan"
 destination_code_start_string_2 = 'System.out.println("Done.");'
 
+update_imports_flag = True
+
 destination_imports_start_string_1 = "import java.util.Arrays;"
 destination_imports_start_string_2 = "import edu.cmu.sv.kelinci.quantification.Greedy;"
 
@@ -63,9 +65,9 @@ for subject in subjects:
         insertion_imports_1_index = -1
         insertion_imports_2_index = -1
         for i, line in enumerate(destination_lines):
-            if destination_imports_start_string_1 in line:
+            if update_imports_flag and destination_imports_start_string_1 in line:
                 insertion_imports_1_index = i
-            if destination_imports_start_string_2 in line:
+            if update_imports_flag and destination_imports_start_string_2 in line:
                 insertion_imports_2_index = i
             if destination_code_start_string_1 in line or destination_code_start_string_2 in line:
                 insertion_code_index = i
@@ -77,14 +79,14 @@ for subject in subjects:
             print("Failed code insertion with: " + subject)
             continue
 
-        if insertion_imports_1_index != -1:
+        if update_imports_flag and insertion_imports_1_index != -1:
             destination_lines[:] = destination_lines[:insertion_imports_1_index + 1] + new_imports_1 + destination_lines[insertion_imports_1_index + 1:]
         else:
             print("Failed imports 1 with: " + subject)
             continue
         
         insertion_imports_2_index += len(new_imports_1)
-        if insertion_imports_2_index != -1:
+        if update_imports_flag and insertion_imports_2_index != -1:
             destination_lines[:] = destination_lines[:insertion_imports_2_index + 1] + new_imports_2 + destination_lines[insertion_imports_2_index + 1:]
         else:
             print("Failed imports 2 with: " + subject)
