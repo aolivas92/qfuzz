@@ -25,7 +25,7 @@ import java.io.PrintWriter;
 public class Driver_Greedy_Guarantee {
 
   /* Maximum number of different observations. */
-  public final static int K = 100;
+  public final static int K = 2;
 
   /* Minimum distance between clusters. */
   public final static double epsilon = 1.0;
