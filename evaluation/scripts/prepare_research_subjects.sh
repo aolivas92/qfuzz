@@ -2,8 +2,8 @@ trap "exit" INT
 
 declare -a subjects=(
  #
-#  "Eclipse_jetty_1_eps1_1"
-#  "leaksn1b-5_1"
+ "Eclipse_jetty_1_eps1_1"
+ "leaksn1b-5_1"
  "blazer_modpow1_unsafe"
  "blazer_modpow2_unsafe"
  "blazer_k96_unsafe"
