@@ -109,7 +109,7 @@ public class Driver_Greedy_Guarantee {
     // Calculate analytics, Nathan
     double analytics = Math.abs(observations[0] - observations[1]);
 
-    String dirPath = "./log/log_30min_10/";
+    String dirPath = "./log/log_30min_2/";
 
     // Log Everything, Alex
     String logPath = "Log.txt";
