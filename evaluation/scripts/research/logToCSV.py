@@ -2,13 +2,13 @@ import pandas as pd
 import os
 import subprocess
 
-log_dir = "/log/log_30min_2/"
+log_dir = "/log/log_30min_10/"
 output_file = "output.csv"
 
 subjects=[
  "Eclipse_jetty_1_eps1_1",
  "leaksn1b-5_1",
- "blazer_loopandbranch_safe",
+#  "blazer_loopandbranch_safe",
  "blazer_modpow1_unsafe",
  "blazer_modpow2_unsafe",
  "blazer_k96_unsafe",
@@ -30,6 +30,8 @@ for subject in subjects:
     indices = []
 
     with open(cur_subject + 'Test_Passed_Log.txt', 'r') as file:
+        # Skip the first line
+        next(file)
         for line in file:
             # print(line)
             indices.append(int(line.split()[0]))
