@@ -17,8 +17,8 @@ time_bound=300 # 300 sec = 5 min
 step_size_eval=1 # every 1 seconds (for reporting)
 
 #driver="Driver_KDynamic"
-#driver="Driver_Greedy"
-driver="Driver_Greedy_Guarantee"
+driver="Driver_Greedy"
+# driver="Driver_Greedy_Guarantee"
 
 declare -a subjects=(
 "blazer_loopandbranch_unsafe"
