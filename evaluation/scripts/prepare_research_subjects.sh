@@ -2,13 +2,17 @@ trap "exit" INT
 
 declare -a subjects=(
  #
- "Eclipse_jetty_1_eps1_1"
- "leaksn1b-5_1"
- "blazer_modpow1_unsafe"
- "blazer_modpow2_unsafe"
- "blazer_k96_unsafe"
- "blazer_gpt14_unsafe"
- "blazer_login_unsafe"
+#  "Eclipse_jetty_1_eps1_1"
+#  "leaksn1b-5_1"
+#  "blazer_modpow1_unsafe"
+#  "blazer_modpow2_unsafe"
+#  "blazer_k96_unsafe"
+#  "blazer_gpt14_unsafe"
+#  "blazer_login_unsafe"
+ "blazer_unixlogin_unsafe"
+ "blazer_sanity_unsafe"
+ "themis_jdk_unsafe"
+ "leaksn1b-1_1"
  )
 
  run_counter=0
