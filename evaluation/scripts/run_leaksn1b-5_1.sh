@@ -21,7 +21,8 @@ step_size_eval=1 # every 1 seconds (for reporting)
 driver="Driver_Greedy_Guarantee"
 
 declare -a subjects=(
-"leaksn1b-5_1"
+# "leaksn1b-5_1"
+ "leaksn1b-1_1"
 )
 
 K=2 # maximum number of partitions

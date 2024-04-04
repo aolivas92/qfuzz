@@ -3,7 +3,8 @@ trap "exit" INT
 declare -a subjects=(
  #
  # Leak Set 5
- "leaksn1b-5_1"
+#  "leaksn1b-5_1"
+ "leaksn1b-1_1"
  )
 
  run_counter=0
