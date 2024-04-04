@@ -31,7 +31,7 @@ for subject in subjects:
 
     n = 100
 
-    bayes_test_arr = [[]]
+    bayes_test_arr = []
 
     max_val = -1
     counter = 0

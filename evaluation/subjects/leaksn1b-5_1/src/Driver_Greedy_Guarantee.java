@@ -86,6 +86,9 @@ public class Driver_Greedy_Guarantee {
     // Start of research
     // Calculate analytics, Nathan
     double analytics = Math.abs(observations[0] - observations[1]);
+    long analyticsLong = (long) analytics;
+
+    Kelinci.addCost(analyticsLong);
 
     String dirPath = "./log/log_30min_5/";
 
