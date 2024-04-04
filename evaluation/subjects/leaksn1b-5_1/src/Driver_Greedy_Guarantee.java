@@ -80,9 +80,6 @@ public class Driver_Greedy_Guarantee {
     }
     System.out.println("observations: " + Arrays.toString(observations));
 
-    PartitionSet clusters = PartitionSet.createFromObservations(epsilon, observations, clusterAlgorithm);
-    Kelinci.setObserverdClusters(clusters.getClusterAverageValues(), clusters.getMinimumDeltaValue());
-
     // Start of research
     // Calculate analytics, Nathan
     double analytics = Math.abs(observations[0] - observations[1]);
