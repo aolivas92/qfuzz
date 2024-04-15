@@ -9,13 +9,17 @@ subjects=[
 #  "blazer_k96_unsafe",
 #  "blazer_gpt14_unsafe",
 #  "blazer_login_unsafe",
+    "blazer_unixlogin_unsafe",
+    "blazer_sanity_unsafe",
+    "themis_jdk_unsafe",
+    "leaksn1b-1_1"
 ]
 
 source_file = "../../subjects/leaksn1b-5_1/src/Driver_Greedy_Guarantee.java"
 start_string = "// Start of research"
 
 destination_code_start_string_1 = "// Start of research"
-destination_code_start_string_2 = 'System.out.println("Done.");'
+destination_code_start_string_2 = 'PartitionSet clusters = PartitionSet.createFromObservations(epsilon, observations, clusterAlgorithm);'
 
 destination_imports_start_string_1 = "import java.util.Arrays;"
 destination_imports_start_string_2 = "import edu.cmu.sv.kelinci.quantification.Greedy;"
@@ -91,16 +95,17 @@ for subject in subjects:
         if insertion_imports_1_index != -1 and len(needed_imports_1) > 0:
             destination_lines[:] = destination_lines[:insertion_imports_1_index + 1] + list(needed_imports_1) + destination_lines[insertion_imports_1_index + 1:]
         else:
-            print("Failed imports 1 with: " + subject)
+            print("No imports 1 with: " + subject)
         
         insertion_imports_2_index += len(needed_imports_1)
         if insertion_imports_2_index != -1 and len(needed_imports_2) > 0:
             destination_lines[:] = destination_lines[:insertion_imports_2_index + 1] + ["\n"] + list(needed_imports_2) + destination_lines[insertion_imports_2_index + 1:]
         else:
-            print("Failed imports 2 with: " + subject)
+            print("No imports 2 with: " + subject)
         
         destination.seek(0)  # Rewind to the beginning of the destination file
         destination.writelines(destination_lines)
     
     cur_subject = os.path.join("../../subjects/" + subject + "/src/Driver_Greedy_Guarantee.java")
-    # os.system('git add ' + cur_subject)
+    os.system('sed -i "s|public final static int K = .*;|public final static int K = 2;|g" ' + cur_subject)
+    os.system('git add ' + cur_subject)
