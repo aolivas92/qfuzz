@@ -23,100 +23,99 @@ import java.io.PrintWriter;
 
 public class Driver_Greedy_Guarantee {
 
-	/* Maximum number of different observations. */
-	public final static int K = 2;
+  /* Maximum number of different observations. */
+  public final static int K = 2;
 
-	/* Minimum distance between clusters. */
-	public final static double epsilon = 1.0;
-	
-	/* Cluster Algorithm */
-	public static PartitionAlgorithm clusterAlgorithm = new Greedy(false);
+  /* Minimum distance between clusters. */
+  public final static double epsilon = 1.0;
 
-	////////////////////////////////////////////////////////////////////////
+  /* Cluster Algorithm */
+  public static PartitionAlgorithm clusterAlgorithm = new Greedy(false);
 
-	public static void main(String[] args) {
+  ////////////////////////////////////////////////////////////////////////
 
-		if (args.length != 1) {
-			System.out.println("Expects file name as parameter");
-			return;
-		}
+  public static void main(String[] args) {
 
-		int public_guess;
-		int[] secrets = new int[K];
+    if (args.length != 1) {
+      System.out.println("Expects file name as parameter");
+      return;
+    }
 
-		// Read all inputs.
-		try (FileInputStream fis = new FileInputStream(args[0])) {
-			byte[] bytes = new byte[Integer.BYTES];
+    int public_guess;
+    int[] secrets = new int[K];
 
-			if (fis.read(bytes) < 0) {
-				throw new RuntimeException("Not enough input data...");
-			}
-			public_guess = Math.floorMod(ByteBuffer.wrap(bytes).getInt(),(int) Math.pow(2,30));
+    // Read all inputs.
+    try (FileInputStream fis = new FileInputStream(args[0])) {
+      byte[] bytes = new byte[Integer.BYTES];
 
-			for (int i = 0; i < secrets.length; i++) {
-				if (fis.read(bytes) < 0) {
-					throw new RuntimeException("Not enough input data...");
-				}
-				secrets[i] = Math.floorMod(ByteBuffer.wrap(bytes).getInt(),(int) Math.pow(2,12));
-			}
+      if (fis.read(bytes) < 0) {
+        throw new RuntimeException("Not enough input data...");
+      }
+      public_guess = Math.floorMod(ByteBuffer.wrap(bytes).getInt(), (int) Math.pow(2, 30));
 
-		} catch (IOException e) {
-			System.err.println("Error reading input");
-			e.printStackTrace();
-			return;
-		}
+      for (int i = 0; i < secrets.length; i++) {
+        if (fis.read(bytes) < 0) {
+          throw new RuntimeException("Not enough input data...");
+        }
+        secrets[i] = Math.floorMod(ByteBuffer.wrap(bytes).getInt(), (int) Math.pow(2, 12));
+      }
 
-		System.out.println("public_guess=" + public_guess);
-		for (int i = 0; i < secrets.length; i++) {
-			System.out.println("secret" + i + "=" + secrets[i]);
-		}
+    } catch (IOException e) {
+      System.err.println("Error reading input");
+      e.printStackTrace();
+      return;
+    }
 
-		long[] observations = new long[K];
-		Mem.clear(true);
-		for (int i = 0; i < K; i++) {
-			Mem.clear(false);
-			leaks_n1s.leaks_n1s(secrets[i], public_guess);
-			observations[i] = Mem.instrCost;
-		}
-		System.out.println("observations: " + Arrays.toString(observations));
+    System.out.println("public_guess=" + public_guess);
+    for (int i = 0; i < secrets.length; i++) {
+      System.out.println("secret" + i + "=" + secrets[i]);
+    }
 
-		PartitionSet clusters = PartitionSet.createFromObservations(epsilon, observations, clusterAlgorithm);
-		Kelinci.setObserverdClusters(clusters.getClusterAverageValues(), clusters.getMinimumDeltaValue());
+    long[] observations = new long[K];
+    Mem.clear(true);
+    for (int i = 0; i < K; i++) {
+      Mem.clear(false);
+      leaks_n1s.leaks_n1s(secrets[i], public_guess);
+      observations[i] = Mem.instrCost;
+    }
+    System.out.println("observations: " + Arrays.toString(observations));
 
     // Start of research
-    // Calculate analytics, Nathan
+    // Calculate analytics
     double analytics = Math.abs(observations[0] - observations[1]);
+    long analyticsLong = (long) analytics;
 
-    String dirPath = "./log/log_5min_1/";
+    Kelinci.addCost(analyticsLong);
 
-    // Log Everything, Alex
+    String dirPath = "./log/log_30min_1/";
+
+    // Log Everything
     String logPath = "Log.txt";
     String data = Double.toString(analytics);
     writeToLog(logPath, data, dirPath, true);
 
-    // Read Everything from Unique file, Alex
+    // Read Everything from Unique file
     String uniqueLogPath = "Unique_Log.txt";
     SortedSet<Double> uniqueValues = readDoubleSetLog(dirPath + uniqueLogPath);
 
-    // Read Test Log file, Alex
+    // Read Test Log file
     String countLog = "Count_Log.txt";
     Long count = readLongLog(dirPath + countLog);
     count += 1;
     writeToLog(countLog, Long.toString(count), dirPath, false);
 
-    // Size threshold -- should be set to 10, but for this subject there is only 3
-    // unique values
     int min_num_tail = 15;
     int threshold = 10;
 
     String testPassedLog = "Test_Passed_Log.txt";
 
+    // Unique Value Test
     if (!uniqueValues.contains(analytics)) {
       uniqueValues.add(analytics);
       writeToLog(uniqueLogPath, Double.toString(analytics), dirPath, true);
 
       // If we found a new unique value, we have more than 15 unique values, and the
-      // size of unique values is divisble by 5.
+      // size of unique values is divisble by 5, try the Exponential Test.
       if (uniqueValues.size() >= min_num_tail && uniqueValues.size() % 5 == 0 && expTest(threshold, uniqueValues) > 0) {
         writeToLog(logPath, "-1", dirPath, true);
 
@@ -158,7 +157,7 @@ public class Driver_Greedy_Guarantee {
     }
   }
 
-  /* Read Log File */
+  /* Read Log File with a Set of Doubles */
   public static SortedSet<Double> readDoubleSetLog(String fileName) {
     SortedSet<Double> doubleSet = new TreeSet<>();
 
@@ -191,7 +190,7 @@ public class Driver_Greedy_Guarantee {
     return doubleSet;
   }
 
-  /* Read Log File */
+  /* Read Log File with Long values */
   public static long readLongLog(String fileName) {
     File file = new File(fileName);
     Long num = (long) -1;
@@ -220,10 +219,11 @@ public class Driver_Greedy_Guarantee {
     return num;
   }
 
+  /* Exponential Test */
   public static Integer expTest(int threshold, SortedSet<Double> sortedSet) {
     int maxNumTailSamples = Math.min(sortedSet.size(), 50);
 
-    // NumTailSamples will be given and at most will be 50.
+    // NumTailSamples will be at most will be 50.
     for (int j = threshold; j <= maxNumTailSamples; j++) {
       // Sorted list of the cost difference that starts at j-1 to the end.
       List<Double> xTail = new ArrayList<>(sortedSet).subList(sortedSet.size() - j, sortedSet.size());

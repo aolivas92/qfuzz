@@ -2,12 +2,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Stream;
-import java.util.SortedSet;
+import java.util.List;
 
 import edu.cmu.sv.kelinci.Kelinci;
 import edu.cmu.sv.kelinci.Mem;
@@ -15,114 +14,113 @@ import edu.cmu.sv.kelinci.quantification.PartitionAlgorithm;
 import edu.cmu.sv.kelinci.quantification.PartitionSet;
 import edu.cmu.sv.kelinci.quantification.Greedy;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.lang.NumberFormatException;
+import java.io.File;
+import java.io.BufferedReader;
 import java.io.PrintWriter;
+import java.io.FileReader;
 
 public class Driver_Greedy_Guarantee {
 
-  /* Maximum number of different observations. */
-  public final static int K = 2;
+	/* Maximum number of different observations. */
+	public final static int K = 2;
 
-  /* Minimum distance between clusters. */
-  public final static double epsilon = 1.0;
+	/* Minimum distance between clusters. */
+	public final static double epsilon = 1.0;
 
-  /* Cluster Algorithm */
-  public static PartitionAlgorithm clusterAlgorithm = new Greedy(false);
+	/* Cluster Algorithm */
+	public static PartitionAlgorithm clusterAlgorithm = new Greedy(false);
 
-  ////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////
 
-  public static final int MAX_LENGTH = 64;
+	public static final int MAX_LENGTH = 64;
 
-  public static void main(String[] args) {
+	public static void main(String[] args) {
 
-    if (args.length != 1) {
-      System.out.println("Expects file name as parameter");
-      return;
-    }
+		if (args.length != 1) {
+			System.out.println("Expects file name as parameter");
+			return;
+		}
 
-    int public_a;
-    int[] secret_taints = new int[K];
+		int public_a;
+		int[] secret_taints = new int[K];
 
-    List<Integer> values = new ArrayList<>();
+		List<Integer> values = new ArrayList<>();
 
-    /* Read all values. */
-    try (FileInputStream fis = new FileInputStream(args[0])) {
-      byte[] bytes = new byte[Integer.BYTES];
-      while ((fis.read(bytes) != -1) && (values.size() < K + 1)) {
-        values.add(ByteBuffer.wrap(bytes).getInt());
-      }
-    } catch (IOException e) {
-      System.err.println("Error reading input");
-      e.printStackTrace();
-      return;
-    }
-    if (values.size() < K + 1) {
-      throw new RuntimeException("Too less data!");
-    }
+		/* Read all values. */
+		try (FileInputStream fis = new FileInputStream(args[0])) {
+			byte[] bytes = new byte[Integer.BYTES];
+			while ((fis.read(bytes) != -1) && (values.size() < K+1)) {
+				values.add(ByteBuffer.wrap(bytes).getInt());
+			}
+		} catch (IOException e) {
+			System.err.println("Error reading input");
+			e.printStackTrace();
+			return;
+		}
+		if (values.size() < K + 1) {
+			throw new RuntimeException("Too less data!");
+		}
 
-    /* Parse public value. */
-    public_a = values.get(0);
+		/* Parse public value. */
+		public_a = values.get(0);
 
-    /* Parse secret values. */
-    for (int i = 0; i < K; i++) {
-      secret_taints[i] = values.get(i + 1);
-    }
+		/* Parse secret values. */
+		for (int i = 0; i < K; i++) {
+			secret_taints[i] = values.get(i+1);
+		}
 
-    System.out.println("public=" + public_a);
-    for (int i = 0; i < secret_taints.length; i++) {
-      System.out.println("secret" + i + "=" + secret_taints[i]);
-    }
+		System.out.println("public=" + public_a);
+		for (int i = 0; i < secret_taints.length; i++) {
+			System.out.println("secret" + i + "=" + secret_taints[i]);
+		}
 
-    long[] observations = new long[K];
-    Mem.clear(true);
-    for (int i = 0; i < K; i++) {
-      Mem.clear(false);
-      MoreSanity.loopAndbranch_unsafe(public_a, secret_taints[i]);
-      observations[i] = Mem.instrCost;
-    }
-    System.out.println("observations: " + Arrays.toString(observations));
-
-    PartitionSet clusters = PartitionSet.createFromObservations(epsilon, observations, clusterAlgorithm);
-    Kelinci.setObserverdClusters(clusters.getClusterAverageValues(), clusters.getMinimumDeltaValue());
+		long[] observations = new long[K];
+		Mem.clear(true);
+		for (int i = 0; i < K; i++) {
+			Mem.clear(false);
+			MoreSanity.loopAndbranch_unsafe(public_a, secret_taints[i]);
+			observations[i] = Mem.instrCost;
+		}
+		System.out.println("observations: " + Arrays.toString(observations));
 
     // Start of research
-    // Calculate analytics, Nathan
+    // Calculate analytics
     double analytics = Math.abs(observations[0] - observations[1]);
+    long analyticsLong = (long) analytics;
 
-    String dirPath = "./log/log_5min_2/";
+    Kelinci.addCost(analyticsLong);
 
-    // Log Everything, Alex
+    String dirPath = "./log/log_30min_1/";
+
+    // Log Everything
     String logPath = "Log.txt";
     String data = Double.toString(analytics);
     writeToLog(logPath, data, dirPath, true);
 
-    // Read Everything from Unique file, Alex
+    // Read Everything from Unique file
     String uniqueLogPath = "Unique_Log.txt";
     SortedSet<Double> uniqueValues = readDoubleSetLog(dirPath + uniqueLogPath);
 
-    // Read Test Log file, Alex
+    // Read Test Log file
     String countLog = "Count_Log.txt";
     Long count = readLongLog(dirPath + countLog);
     count += 1;
     writeToLog(countLog, Long.toString(count), dirPath, false);
 
-    // Size threshold -- should be set to 10, but for this subject there is only 3
-    // unique values
     int min_num_tail = 15;
     int threshold = 10;
 
     String testPassedLog = "Test_Passed_Log.txt";
 
+    // Unique Value Test
     if (!uniqueValues.contains(analytics)) {
       uniqueValues.add(analytics);
       writeToLog(uniqueLogPath, Double.toString(analytics), dirPath, true);
 
       // If we found a new unique value, we have more than 15 unique values, and the
-      // size of unique values is divisble by 5.
+      // size of unique values is divisble by 5, try the Exponential Test.
       if (uniqueValues.size() >= min_num_tail && uniqueValues.size() % 5 == 0 && expTest(threshold, uniqueValues) > 0) {
         writeToLog(logPath, "-1", dirPath, true);
 
@@ -164,7 +162,7 @@ public class Driver_Greedy_Guarantee {
     }
   }
 
-  /* Read Log File */
+  /* Read Log File with a Set of Doubles */
   public static SortedSet<Double> readDoubleSetLog(String fileName) {
     SortedSet<Double> doubleSet = new TreeSet<>();
 
@@ -197,7 +195,7 @@ public class Driver_Greedy_Guarantee {
     return doubleSet;
   }
 
-  /* Read Log File */
+  /* Read Log File with Long values */
   public static long readLongLog(String fileName) {
     File file = new File(fileName);
     Long num = (long) -1;
@@ -226,10 +224,11 @@ public class Driver_Greedy_Guarantee {
     return num;
   }
 
+  /* Exponential Test */
   public static Integer expTest(int threshold, SortedSet<Double> sortedSet) {
     int maxNumTailSamples = Math.min(sortedSet.size(), 50);
 
-    // NumTailSamples will be given and at most will be 50.
+    // NumTailSamples will be at most will be 50.
     for (int j = threshold; j <= maxNumTailSamples; j++) {
       // Sorted list of the cost difference that starts at j-1 to the end.
       List<Double> xTail = new ArrayList<>(sortedSet).subList(sortedSet.size() - j, sortedSet.size());
