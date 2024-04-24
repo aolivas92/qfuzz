@@ -3,18 +3,20 @@ import math
 import os
 import subprocess
 
-log_dir = "/log/log_30min_2/"
+log_dir = "/log/log_30min_1/"
 output_file = "BayesFactor.csv"
 
 subjects=[
  "Eclipse_jetty_1_eps1_1",
  "leaksn1b-5_1",
- "blazer_loopandbranch_safe",
+ "blazer_loopandbranch_unsafe",
  "blazer_modpow1_unsafe",
  "blazer_modpow2_unsafe",
  "blazer_k96_unsafe",
  "blazer_gpt14_unsafe",
  "blazer_login_unsafe",
+ "blazer_unixlogin_unsafe",
+ "leaksn1b-1_1"
 ]
 for subject in subjects:
     cur_subject = "../../subjects/" + subject + log_dir
@@ -58,11 +60,5 @@ for subject in subjects:
     print(pd_bayes_arr)
 
     pd_bayes_arr.to_csv(cur_subject + output_file, index=True, header=False)
-
-    try:
-        subprocess.run(["git", "add", cur_subject + output_file], check=True)
-        print(f"Successfully added {subject} to git.")
-    except subprocess.CalledProcessError as e:
-        print(f"Error: Failed while adding {subject} to git.")
 
     print("Finished:", subject)
