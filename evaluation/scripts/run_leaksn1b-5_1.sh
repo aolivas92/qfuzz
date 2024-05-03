@@ -21,8 +21,8 @@ step_size_eval=1 # every 1 seconds (for reporting)
 driver="Driver_Greedy_Guarantee"
 
 declare -a subjects=(
-# "leaksn1b-5_1"
- "leaksn1b-1_1"
+"leaksn1b-5_1"
+#  "leaksn1b-1_1"
 )
 
 K=2 # maximum number of partitions
@@ -52,7 +52,7 @@ do
     sleep 5 # Wait a little bit to ensure that server is started
 
     # Start modified AFL
-    AFL_SKIP_CPUFREQ=1 AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1 nohup ../../../tool/afl-2.51b-qfuzz/afl-fuzz -i in_dir -o fuzzer-out-$j -c quantify -K ${K} -S afl -t 999999999 ../../../tool/fuzzerside/interface -K ${K} @@ > fuzzer-out-$j/afl-log.txt &
+    AFL_SKIP_CPUFREQ=1 AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1 nohup ../../../tool/afl-2.51b-qfuzz/afl-fuzz -i in_dir -o fuzzer-out-$j -c user_defined_cost -K ${K} -S afl -t 999999999 ../../../tool/fuzzerside/interface -K ${K} @@ > fuzzer-out-$j/afl-log.txt &
     afl_pid=$!
 
     # Wait for timebound
