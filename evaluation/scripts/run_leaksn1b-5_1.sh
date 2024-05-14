@@ -13,7 +13,7 @@ trap "exit" INT
 echo "Run QFuzz on the 'Eclipse_jetty_1_eps1_1' subject..."
 
 number_of_runs=1 # 1 repetitions
-time_bound=300 # 300 sec = 5 min
+time_bound=1200 # 300 sec = 5 min
 step_size_eval=1 # every 1 seconds (for reporting)
 
 #driver="Driver_KDynamic"
@@ -21,8 +21,8 @@ step_size_eval=1 # every 1 seconds (for reporting)
 driver="Driver_Greedy_Guarantee"
 
 declare -a subjects=(
-"leaksn1b-5_1"
-#  "leaksn1b-1_1"
+# "leaksn1b-5_1"
+ "leaksn1b-1_1"
 )
 
 K=2 # maximum number of partitions
