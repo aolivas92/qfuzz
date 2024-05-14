@@ -154,11 +154,17 @@ public class Driver_Greedy_Guarantee {
     System.out.println("observations: " + Arrays.toString(observations));
 
     // Start of research
+
+    // Uncomment below to use clustering:
+    PartitionSet clusters = PartitionSet.createFromObservations(epsilon, observations, clusterAlgorithm);
+    Kelinci.setObserverdClusters(clusters.getClusterAverageValues(), clusters.getMinimumDeltaValue());
+
     // Calculate analytics
     double analytics = Math.abs(observations[0] - observations[1]);
     long analyticsLong = (long) analytics;
 
-    Kelinci.addCost(analyticsLong);
+    // Uncomment below to use cost, don't forget to update run script
+    // Kelinci.addCost(analyticsLong);
 
     String dirPath = "./log/log_30min_3/";
 
