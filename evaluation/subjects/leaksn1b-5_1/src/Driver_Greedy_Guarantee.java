@@ -83,8 +83,10 @@ public class Driver_Greedy_Guarantee {
     // Start of research
 
     // Uncomment below to use clustering:
-    PartitionSet clusters = PartitionSet.createFromObservations(epsilon, observations, clusterAlgorithm);
-    Kelinci.setObserverdClusters(clusters.getClusterAverageValues(), clusters.getMinimumDeltaValue());
+    // PartitionSet clusters = PartitionSet.createFromObservations(epsilon,
+    // observations, clusterAlgorithm);
+    // Kelinci.setObserverdClusters(clusters.getClusterAverageValues(),
+    // clusters.getMinimumDeltaValue());
 
     // Calculate analytics
     double analytics = Math.abs(observations[0] - observations[1]);
@@ -93,7 +95,7 @@ public class Driver_Greedy_Guarantee {
     // Uncomment below to use cost, don't forget to update run script
     // Kelinci.addCost(analyticsLong);
 
-    String dirPath = "./log/log_30min_5/";
+    String dirPath = "./log/log_30min_6/";
 
     // Log Everything
     String logPath = "Log.txt";
