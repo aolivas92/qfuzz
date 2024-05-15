@@ -156,8 +156,10 @@ public class Driver_Greedy_Guarantee {
     // Start of research
 
     // Uncomment below to use clustering:
-    PartitionSet clusters = PartitionSet.createFromObservations(epsilon, observations, clusterAlgorithm);
-    Kelinci.setObserverdClusters(clusters.getClusterAverageValues(), clusters.getMinimumDeltaValue());
+    // PartitionSet clusters = PartitionSet.createFromObservations(epsilon,
+    // observations, clusterAlgorithm);
+    // Kelinci.setObserverdClusters(clusters.getClusterAverageValues(),
+    // clusters.getMinimumDeltaValue());
 
     // Calculate analytics
     double analytics = Math.abs(observations[0] - observations[1]);
