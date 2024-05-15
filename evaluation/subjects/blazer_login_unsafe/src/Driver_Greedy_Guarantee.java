@@ -118,7 +118,7 @@ public class Driver_Greedy_Guarantee {
     // Uncomment below to use cost, don't forget to update run script
     // Kelinci.addCost(analyticsLong);
 
-    String dirPath = "./log/log_30min_6/";
+    String dirPath = "./log/log_30min_7/";
 
     // Log Everything
     String logPath = "Log.txt";
