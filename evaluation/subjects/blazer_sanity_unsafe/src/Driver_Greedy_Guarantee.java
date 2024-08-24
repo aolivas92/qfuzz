@@ -83,14 +83,18 @@ public class Driver_Greedy_Guarantee {
 		}
 		System.out.println("observations: " + Arrays.toString(observations));
 
-		PartitionSet clusters = PartitionSet.createFromObservations(epsilon, observations, clusterAlgorithm);
-		Kelinci.setObserverdClusters(clusters.getClusterAverageValues(), clusters.getMinimumDeltaValue());
+		//PartitionSet clusters = PartitionSet.createFromObservations(epsilon, observations, clusterAlgorithm);
+		//Kelinci.setObserverdClusters(clusters.getClusterAverageValues(), clusters.getMinimumDeltaValue());
 
     // Start of research
     // Calculate analytics, Nathan
     double analytics = Math.abs(observations[0] - observations[1]);
 
-    String dirPath = "./log/log_30min_1/";
+    long analyticsLong = (long) analytics;
+
+    Kelinci.addCost(analyticsLong);
+
+    String dirPath = "./log/log_30min_A/";
 
     // Log Everything, Alex
     String logPath = "Log.txt";
