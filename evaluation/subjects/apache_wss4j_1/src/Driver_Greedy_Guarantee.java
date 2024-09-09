@@ -119,11 +119,11 @@ public class Driver_Greedy_Guarantee {
         // Start of research
         // Calculate analytics
         double analytics = Math.abs(observations[0] - observations[1]);
-        long analyticsLong = (long) analytics;
+        long analyticsLong = 0L;
 
         Kelinci.addCost(analyticsLong);
 
-        String dirPath = "./log/log_60min_a/";
+        String dirPath = "./log/log_60min_b/";
 
         // Log Everything
         String logPath = "Log.txt";
