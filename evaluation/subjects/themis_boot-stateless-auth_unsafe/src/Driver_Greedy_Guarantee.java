@@ -33,7 +33,7 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.FileWriter;
 
-public class Driver_Greedy {
+public class Driver_Greedy_Guarantee {
 
     /* Maximum number of different observations. */
     public final static int K = 2;
