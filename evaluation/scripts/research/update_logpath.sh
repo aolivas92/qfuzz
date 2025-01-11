@@ -1,22 +1,39 @@
 trap "exit" INT
 
+folder_path=$1
 declare -a subjects=(
  #
 #  "Eclipse_jetty_1_eps1_1"
-#  "leaksn1b-5_1"
- "blazer_modpow1_unsafe"
- "blazer_modpow2_unsafe"
- "blazer_k96_unsafe"
- "blazer_gpt14_unsafe"
- "blazer_login_unsafe"
+ #"leaksn1b-1_1"
+ #"leaksn1b-2_1"
+ #"leaksn1b-3_1"
+ #"leaksn1b-4_1"
+ #"leaksn1b-5_1"
+ #"blazer_array_unsafe"
+ #"blazer_gpt14_unsafe"
+ #"blazer_k96_unsafe"
+ #"blazer_login_unsafe"
+ #"blazer_modpow1_unsafe"
+ #"blazer_modpow2_unsafe"
+ #"blazer_passwordEq_unsafe"
+ #"blazer_sanity_unsafe"
+ #"blazer_straightline_unsafe"
+ "themis_boot-stateless-auth_unsafe"
+ "themis_jetty_safe"
+ "themis_jetty_unsafe"
+ "themis_orientdb_unsafe"
+ "themis_picketbox_unsafe"
+ "themis_spring-security_unsafe"
+ "themis_tourplanner_unsafe"
+ "apache_ftpserver_salted_unsafe"
+ "apache_ftpserver_stringutils_unsafe"
  )
  
  #driver="Driver_KDynamic"
-#driver="Driver_Greedy"
-driver="Driver_Greedy_Guarantee"
-
- new_dir_path="./log/log_30min_10/"
-
+ #driver="Driver_Greedy"
+ driver="Driver_Greedy_Guarantee"
+ new_dir_path="./log/log_30min_$folder_path/"
+ echo "setting path to $new_dir_path"
  total_number_subjects=${#subjects[@]}
  echo
 
