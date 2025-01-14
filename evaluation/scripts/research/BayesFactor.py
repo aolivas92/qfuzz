@@ -6,23 +6,37 @@ import subprocess
 log_dir = "/log/log_30min_1/"
 output_file = "BayesFactor.csv"
 
-subjects=[
- "Eclipse_jetty_1_eps1_1",
- "leaksn1b-5_1",
- "blazer_loopandbranch_unsafe",
- "blazer_modpow1_unsafe",
- "blazer_modpow2_unsafe",
- "blazer_k96_unsafe",
- "blazer_gpt14_unsafe",
- "blazer_login_unsafe",
- "blazer_unixlogin_unsafe",
- "leaksn1b-1_1"
-]
-for subject in subjects:
-    cur_subject = "../../subjects/" + subject + log_dir
+
+
+# Path to the subjects folder
+subjects_dir = '../../../evaluation/subjects'
+
+# List to store paths to subfolders containing 'Test_Passed_log.txt'
+log_folders_with_file = []
+
+# Traverse the subjects folder
+for subject_name in os.listdir(subjects_dir):
+    subject_path = os.path.join(subjects_dir, subject_name)
+
+    if os.path.isdir(subject_path):  # Check if it's a directory
+        log_path = os.path.join(subject_path, 'log')
+
+        if os.path.isdir(log_path):  # Check if the 'log' folder exists
+            # Traverse the log folder
+            for log_subfolder in os.listdir(log_path):
+                log_subfolder_path = os.path.join(log_path, log_subfolder)
+
+                if os.path.isdir(log_subfolder_path):  # Check if it's a subfolder
+                    # Check if 'Test_Passed_log.txt' exists
+                    log_file_path = os.path.join(log_subfolder_path, 'Test_Passed_log.txt')
+                    if os.path.isfile(log_file_path):
+                        log_folders_with_file.append(log_subfolder_path + '/')
+
+for cur_subject in log_folders_with_file:
+
 
     if not os.path.exists(cur_subject + "Test_Passed_Log.txt"):
-        print("Test_Passed_Log.txt doesnt exist for:", subject)
+        print("Test_Passed_Log.txt doesnt exist for:", cur_subject)
         continue
 
     with open(cur_subject + 'Log.txt', 'r') as file:
@@ -61,4 +75,4 @@ for subject in subjects:
 
     pd_bayes_arr.to_csv(cur_subject + output_file, index=True, header=False)
 
-    print("Finished:", subject)
+    print("Finished:", cur_subject)
